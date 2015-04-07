@@ -18,8 +18,8 @@ import org.apache.hadoop.mapreduce.Reducer.Context;
 
 /*
  * Input formats: 
- * <state@rent-own, "count-rented/count-owned">
- * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-population">
+ * <state@rent-own, "count-rented/count-owned"> – Used for Q1 analysis
+ * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-population"> – Used for Q2 analysis
  */
 public class CensusVersusReducer extends Reducer<Text, Text, Text, Text> {
 

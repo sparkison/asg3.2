@@ -20,8 +20,8 @@ import org.apache.hadoop.mapreduce.Mapper.Context;
 
 /*
  * Output formats: 
- * <state@rent-own, "count-rented/count-owned">
- * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-population">
+ * <state@rent-own, "count-rented/count-owned"> – Used for Q1 analysis
+ * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-population"> – Used for Q2 analysis
  */
 public class CensusVersusGrabber extends Mapper<LongWritable, Text, Text, Text> {
 
