@@ -1,3 +1,9 @@
+/**
+ * @author Shaun Parkison (shaunpa)
+ * CS455 - ASG3
+ * Census data analysis using MapReduce
+ */
+
 package cs455.map;
 
 import java.io.IOException;
@@ -26,6 +32,12 @@ public class CensusDataGrabber extends Mapper<LongWritable, Text, Text, IntWrita
 		// Iterate through each line and process
 		while(lineItr.hasMoreTokens()){
 			
+			/*
+			 * ***************************************************
+			 * Primary file information
+			 * ***************************************************
+			 */
+			
 			String line = lineItr.nextToken();
 			state = line.substring(8, 10);
 			summaryLevel = Integer.parseInt(line.substring(10, 13));
@@ -39,14 +51,23 @@ public class CensusDataGrabber extends Mapper<LongWritable, Text, Text, IntWrita
 			logicalRecordPart = Integer.parseInt(line.substring(24, 28));
 			totalRecordParts = Integer.parseInt(line.substring(28, 32));
 			
-			// Testing
-			String result = "State:\t" + state + ", Summary level:\t" + summaryLevel + ", Logical Records:\t" + logicalRecord + ", Record Parts:\t" + logicalRecordPart + ", Total Record:\t" + totalRecordParts;
+			// Sanity check
+			String result = "State:\t" + state + ", Summary level:\t" + summaryLevel + ", Logical Record:\t" + logicalRecord + ", Record Part:\t" + logicalRecordPart + ", Total Record Parts:\t" + totalRecordParts;
+			
+			/*
+			 * ***************************************************
+			 * END Primary file information
+			 * ***************************************************
+			 */
+			
 			word.set(result);
+			
+			
 			
 			context.write(word, one);
 			
-		}
+		}// END While loop
 		
-	}
+	}// END map
 	
 }
