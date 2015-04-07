@@ -4,7 +4,6 @@
  * Census data analysis using MapReduce
  */
 
-
 package cs455.util;
 
 import java.io.IOException;
@@ -26,7 +25,8 @@ public class CensusDriver {
 		// The census job
 		CensusDataJob censusJob = new CensusDataJob(input, output);
 		try {
-			censusJob.start();
+			// Used to find answer to Q1: per-state breakdown of rented vs. owned
+			censusJob.q1();
 		} catch (IllegalArgumentException | ClassNotFoundException
 				| IOException | InterruptedException e) {
 			System.out.println("Error starting Census map reduce job: ");
