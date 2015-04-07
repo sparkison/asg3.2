@@ -7,6 +7,8 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.NullWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
@@ -53,11 +55,11 @@ public class CensusDataJob {
 		job.setReducerClass(CensusDataReducer.class);
 
 		// Set the Map output types
-		job.setMapOutputKeyClass(LongWritable.class);
+		job.setMapOutputKeyClass(Text.class);
 		job.setMapOutputValueClass(IntWritable.class);
 		// Set the Reduce output types
-		job.setOutputKeyClass(LongWritable.class);
-		job.setOutputValueClass(IntWritable.class);
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(NullWritable.class);
 
 		// Set the output paths for the job
 		FileInputFormat.addInputPath(job, inPath);
