@@ -16,6 +16,11 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.Reducer.Context;
 
+/*
+ * Input formats: 
+ * <state@rent-own, "count-rented/count-owned">
+ * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-population">
+ */
 public class CensusVersusReducer extends Reducer<Text, Text, Text, Text> {
 
 	private static Text result = new Text();
@@ -30,11 +35,12 @@ public class CensusVersusReducer extends Reducer<Text, Text, Text, Text> {
 		
 		// Used to determine what type of analysis we're doing
 		String[] type = key.toString().split("@");
+		String versusType = type[1].trim();
 		
 		/*
 		 * If here, doing rent vs. owned comparison
 		 */
-		if (type[1].trim().equals("rent-own")) {
+		if (versusType.equals("rent-own")) {
 			
 			for (Text value : values) {
 				String[] split = value.toString().split("/");
@@ -56,7 +62,7 @@ public class CensusVersusReducer extends Reducer<Text, Text, Text, Text> {
 		/*
 		 * If here, doing male-unmarried vs. female-unmarried comparison
 		 */
-		else if (type[1].trim().equals("maleUnmarried-femaleUnmarried")) {
+		if (versusType.equals("maleUnmarried-femaleUnmarried")) {
 			
 			for (Text value : values) {
 				String[] split = value.toString().split("/");

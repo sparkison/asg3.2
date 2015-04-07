@@ -18,6 +18,11 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Mapper.Context;
 
+/*
+ * Output formats: 
+ * <state@rent-own, "count-rented/count-owned">
+ * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-population">
+ */
 public class CensusVersusGrabber extends Mapper<LongWritable, Text, Text, Text> {
 
 	private final static int MAX_LEVEL = 100;
