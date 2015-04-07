@@ -26,7 +26,7 @@ public class CensusDriver {
 		CensusDataJob censusJob = new CensusDataJob(input, output);
 		try {
 			// Used to find answer to Q1: per-state breakdown of rented vs. owned
-			censusJob.q1();
+			censusJob.versus();
 		} catch (IllegalArgumentException | ClassNotFoundException
 				| IOException | InterruptedException e) {
 			System.out.println("Error starting Census map reduce job: ");

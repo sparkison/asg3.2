@@ -41,7 +41,7 @@ public class CensusDataJob {
 		return new String(outputPath);
 	}
 	
-	public void q1() throws IllegalArgumentException, IOException, ClassNotFoundException, InterruptedException{
+	public void versus() throws IllegalArgumentException, IOException, ClassNotFoundException, InterruptedException{
 
 		Configuration conf = new Configuration();
 		FileSystem fs = FileSystem.get(conf);
