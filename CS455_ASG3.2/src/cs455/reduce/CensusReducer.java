@@ -68,11 +68,11 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 				total += Integer.parseInt(split[2]);
 			}
 						
-			word.set(key.toString().split("@")[0] + " % Male never married");
+			word.set(key.toString().split("@")[0] + " % Male never married (of total pop)");
 			result.set(count + "/" + total);
 			context.write(word, result);
 			
-			word.set(key.toString().split("@")[0] + " % Female never married");
+			word.set(key.toString().split("@")[0] + " % Female never married (of total pop)");
 			result.set(count2 + "/" + total);
 			context.write(word, result);
 			
@@ -111,11 +111,11 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 				total += Integer.parseInt(split[2]);
 			}
 						
-			word.set(key.toString().split("@")[0] + " % Male 18 and under");
+			word.set(key.toString().split("@")[0] + " % Male 18 and under (of total pop)");
 			result.set(count + "/" + total);
 			context.write(word, result);
 			
-			word.set(key.toString().split("@")[0] + " % Female 18 and under");
+			word.set(key.toString().split("@")[0] + " % Female 18 and under (of total pop)");
 			result.set(count2 + "/" + total);
 			context.write(word, result);
 			

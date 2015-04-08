@@ -51,7 +51,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 			state = line.substring(8, 10);
 			summaryLevel = Integer.parseInt(line.substring(10, 13));
 
-			// Only analyze up to a summary level of 100 
+			// Only analyze at summary level 100 
 			if (summaryLevel != MAX_LEVEL)
 				continue;
 
