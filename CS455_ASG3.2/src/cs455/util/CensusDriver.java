@@ -15,7 +15,7 @@ public class CensusDriver {
 	public static void main(String args[]) {
 		
 		if(args == null || args.length < 1) {
-			System.out.println("Incorrect number of argument used.\nPlease use: \"java CensusDriver [input_path] [output_path]\"");
+			System.out.println("Incorrect number of arguments used.\nPlease use: \"cs455.util.CensusDriver [input_path] [output_path]\"");
 			System.exit(1);
 		}
 		
