@@ -158,7 +158,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			result.set(count + "/" + total);
 			context.write(word, result);
 			
-			word.set(key.toString().split("@")[0] + " % Female age 30 to 39(of total pop)");
+			word.set(key.toString().split("@")[0] + " % Female age 30 to 39 (of total pop)");
 			result.set(count2 + "/" + total);
 			context.write(word, result);
 			
