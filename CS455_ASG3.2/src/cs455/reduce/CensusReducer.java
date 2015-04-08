@@ -7,8 +7,13 @@
 package cs455.reduce;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -173,6 +178,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		if (versusType.equals("home-value")) {
 			
 			Map<String, Integer> houseValMap = new HashMap<String, Integer>();
+			Map<Integer, String> sortedValMap = new TreeMap<Integer, String>();
 			String valRange;
 			
 			for (Text value : values) {
@@ -187,12 +193,34 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 				}
 			}
 			
+			// Sort the results by value
 			for (String range : houseValMap.keySet()) {
-				word.set(type[0] + " " + range);
-				result.set("" + houseValMap.get(range));
-				context.write(word, result);
+				sortedValMap.put(houseValMap.get(range), range);
+			}
+			List<Integer> sortedIndex = new ArrayList<Integer>();
+			for (Integer index : sortedValMap.keySet()) {
+				sortedIndex.add(index);
 			}
 			
+			/*
+			 * List size is 20, so grab the two middle values, 
+			 * median range will be between highest and lowest of these
+			 * two ranges
+			 */
+			DecimalFormat formatter = new DecimalFormat("#,###");
+			String rangeOne = sortedValMap.get(sortedIndex.get(9));
+			String rangeTwo = sortedValMap.get(sortedIndex.get(10));
+			
+			List<Integer> rangeList = new ArrayList<Integer>();
+			rangeList.add(Integer.parseInt(rangeOne.split(" - ")[0].replaceAll("[^0-9]", "")));
+			rangeList.add(Integer.parseInt(rangeOne.split(" - ")[1].replaceAll("[^0-9]", "")));
+			rangeList.add(Integer.parseInt(rangeTwo.split(" - ")[0].replaceAll("[^0-9]", "")));
+			rangeList.add(Integer.parseInt(rangeTwo.split(" - ")[1].replaceAll("[^0-9]", "")));
+			Collections.sort(rangeList);
+			
+			word.set(type[0] + " median house value");
+			result.set("$" + formatter.format(rangeList.get(0)) + " - $" + formatter.format(rangeList.get(3)));
+			context.write(word, result);
 			
 		}
 

@@ -244,7 +244,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 	// Helper methods
 	public String[] getHouseValueRanges(){
 		String[] houseVals = new String[20];
-		houseVals[0] = "Less than $15,000";
+		houseVals[0] = "$0 - $14,999";
 		houseVals[1] = "$15,000 - $19,999";
 		houseVals[2] = "$20,000 - $24,999";
 		houseVals[3] = "$25,000 - $29,999";
@@ -263,7 +263,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 		houseVals[16] = "$250,000 - $299,999";
 		houseVals[17] = "$300,000 - $399,999";
 		houseVals[18] = "$400,000 - $499,999";
-		houseVals[19] = "$500,000 or more";
+		houseVals[19] = "$500,000 - $500,000";
 		return houseVals;
 	}
 
