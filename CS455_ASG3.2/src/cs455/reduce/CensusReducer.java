@@ -16,6 +16,7 @@ import org.apache.hadoop.mapreduce.Reducer;
  * <state@rent-own, "count-rented/count-owned"> 												– Used for Q1 analysis
  * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-population"> 	– Used for Q2 analysis
  * <state@rural-urban, "count-rural/count-urban"> 												– Used for Q4 analysis
+ * <state@male18-female18, "male-under18/female-under18/total-population"> 						– Used for Q3(a) analysis
  * <state@male19to29-female19to29, "male-19to29/female-19to29/total-population"> 				– Used for Q3(b) analysis
  * <state@male30to39-female30to39, "male-30to39/female-30to39/total-population"> 				– Used for Q3(c) analysis
  */
