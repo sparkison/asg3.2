@@ -7,6 +7,8 @@
 package cs455.reduce;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -50,11 +52,11 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			
 			total = count + count2;
 			
-			word.set(key.toString().split("@")[0] + " % Rent");
+			word.set(type[0] + " % Rent");
 			result.set(count + "/" + total);
 			context.write(word, result);
 			
-			word.set(key.toString().split("@")[0] + " % Own");
+			word.set(type[0] + " % Own");
 			result.set(count2 + "/" + total);
 			context.write(word, result);
 			
@@ -71,11 +73,11 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 				total += Integer.parseInt(split[2]);
 			}
 						
-			word.set(key.toString().split("@")[0] + " % Male never married (of total pop)");
+			word.set(type[0] + " % Male never married (of total pop)");
 			result.set(count + "/" + total);
 			context.write(word, result);
 			
-			word.set(key.toString().split("@")[0] + " % Female never married (of total pop)");
+			word.set(type[0] + " % Female never married (of total pop)");
 			result.set(count2 + "/" + total);
 			context.write(word, result);
 			
@@ -93,11 +95,11 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			
 			total = count + count2;
 			
-			word.set(key.toString().split("@")[0] + " % Rural households");
+			word.set(type[0] + " % Rural households");
 			result.set(count + "/" + total);
 			context.write(word, result);
 			
-			word.set(key.toString().split("@")[0] + " % Urban households");
+			word.set(type[0] + " % Urban households");
 			result.set(count2 + "/" + total);
 			context.write(word, result);
 			
@@ -114,11 +116,11 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 				total += Integer.parseInt(split[2]);
 			}
 						
-			word.set(key.toString().split("@")[0] + " % Male 18 and under (of total pop)");
+			word.set(type[0] + " % Male 18 and under (of total pop)");
 			result.set(count + "/" + total);
 			context.write(word, result);
 			
-			word.set(key.toString().split("@")[0] + " % Female 18 and under (of total pop)");
+			word.set(type[0] + " % Female 18 and under (of total pop)");
 			result.set(count2 + "/" + total);
 			context.write(word, result);
 			
@@ -135,11 +137,11 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 				total += Integer.parseInt(split[2]);
 			}
 						
-			word.set(key.toString().split("@")[0] + " % Male age 19 to 29 (of total pop)");
+			word.set(type[0] + " % Male age 19 to 29 (of total pop)");
 			result.set(count + "/" + total);
 			context.write(word, result);
 			
-			word.set(key.toString().split("@")[0] + " % Female age 19 to 29 (of total pop)");
+			word.set(type[0] + " % Female age 19 to 29 (of total pop)");
 			result.set(count2 + "/" + total);
 			context.write(word, result);
 			
@@ -156,11 +158,11 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 				total += Integer.parseInt(split[2]);
 			}
 						
-			word.set(key.toString().split("@")[0] + " % Male age 30 to 39 (of total pop)");
+			word.set(type[0] + " % Male age 30 to 39 (of total pop)");
 			result.set(count + "/" + total);
 			context.write(word, result);
 			
-			word.set(key.toString().split("@")[0] + " % Female age 30 to 39 (of total pop)");
+			word.set(type[0] + " % Female age 30 to 39 (of total pop)");
 			result.set(count2 + "/" + total);
 			context.write(word, result);
 			
@@ -170,20 +172,27 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		 */
 		if (versusType.equals("home-value")) {
 			
-			for (Text value : values) {
-				String[] split = value.toString().split("/");
-				count += Integer.parseInt(split[0]);
-				count2 += Integer.parseInt(split[1]);
-				total += Integer.parseInt(split[2]);
-			}
-						
-			word.set(key.toString().split("@")[0] + " % Male age 30 to 39 (of total pop)");
-			result.set(count + "/" + total);
-			context.write(word, result);
+			Map<String, Integer> houseValMap = new HashMap<String, Integer>();
+			String valRange;
 			
-			word.set(key.toString().split("@")[0] + " % Female age 30 to 39 (of total pop)");
-			result.set(count2 + "/" + total);
-			context.write(word, result);
+			for (Text value : values) {
+				String[] split = value.toString().split("=");
+				valRange = split[0].trim();
+				if (!houseValMap.containsKey(valRange)) {
+					houseValMap.put(valRange, Integer.parseInt(split[1]));
+				} else {
+					count = houseValMap.get(valRange);
+					count += Integer.parseInt(split[1]);
+					houseValMap.put(valRange, count);
+				}
+			}
+			
+			for (String range : houseValMap.keySet()) {
+				word.set(type[0] + " " + range);
+				result.set("" + houseValMap.get(range));
+				context.write(word, result);
+			}
+			
 			
 		}
 

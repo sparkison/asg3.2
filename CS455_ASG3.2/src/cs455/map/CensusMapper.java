@@ -230,7 +230,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				for (int i = 0; i<20; i++) {
 					end = start + 9;
 					homeValue = Integer.parseInt(line.substring(start, end));
-					output.set(houseVals[i] + "/" + homeValue);
+					output.set(houseVals[i] + "=" + homeValue);
 					context.write(word, output);
 					start += 9;
 				}
