@@ -15,16 +15,14 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 /*
  * Output formats: 
- * <state@rent-own, "count-rented/count-owned"> 												– Used for Q1 analysis
- * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-population"> 	– Used for Q2 analysis
- * <state@rural-urban, "count-rural/count-urban"> 												– Used for Q4 analysis
+ * 
  */
-public class CensusVersusGrabber extends Mapper<LongWritable, Text, Text, Text> {
+public class CensusAvgGrabber extends Mapper<LongWritable, Text, Text, Text> {
 
 	private final static int MAX_LEVEL = 100;
 	private static Text word = new Text();
 	private static Text output = new Text();
-
+	
 	@Override
 	protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 
@@ -74,40 +72,14 @@ public class CensusVersusGrabber extends Mapper<LongWritable, Text, Text, Text> 
 			 */			
 
 			if (logicalRecordPart == 1) {
-				// Male-unarried vs. female-unmarried
-				totalPop = Integer.parseInt(line.substring(300, 309));
-				//				malePop = Integer.parseInt(line.substring(363, 372));
-				//				femalePop = Integer.parseInt(line.substring(372, 381));
-
-				maleUnmarried = Integer.parseInt(line.substring(4422, 4431)); 
-				femaleUnmarried = Integer.parseInt(line.substring(4467, 4476));
-
-				word.set(state + "@maleUnmarried-femaleUnmarried");
-				output.set(maleUnmarried + "/" + femaleUnmarried + "/" + totalPop);
-				context.write(word, output);
-
+				//TODO do something
 			}
 			if (logicalRecordPart == 2) {
-				// Rented vs. owned
-				rented = Integer.parseInt(line.substring(1812, 1821));
-				owned = Integer.parseInt(line.substring(1803, 1812));
-
-				word.set(state + "@rent-own");
-				output.set(rented + "/" + owned);
-				context.write(word, output);
-
-				// Urban vs. rural
-				urbanInside = Integer.parseInt(line.substring(1857, 1866));
-				urbanOutside = Integer.parseInt(line.substring(1866, 1875));
-				rural = Integer.parseInt(line.substring(1875, 1884));
-				
-				word.set(state + "@rural-urban");
-				output.set(rural + "/" + (urbanInside + urbanOutside));
-				context.write(word, output);
+				//TODO do something
 			}
 
 		}// END While loop
 
 	}// END map
-
+	
 }
