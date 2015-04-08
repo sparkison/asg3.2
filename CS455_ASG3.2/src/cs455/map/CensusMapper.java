@@ -19,6 +19,8 @@ import org.apache.hadoop.mapreduce.Mapper;
  * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-population"> 	– Used for Q2 analysis
  * <state@rural-urban, "count-rural/count-urban"> 												– Used for Q4 analysis
  * <state@male18-female18, "male-under18/female-under18/total-population"> 						– Used for Q3(a) analysis
+ * <state@male19to29-female19to29, "male-19to29/female-19to29/total-population"> 				– Used for Q3(b) analysis
+ * <state@male30to39-female30to39, "male-30to39/female-30to39/total-population"> 				– Used for Q3(c) analysis
  */
 public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 
@@ -75,13 +77,14 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 			 */			
 
 			if (logicalRecordPart == 1) {
-				
-				/*
+
+				/*************************************
 				 * Male-unarried vs. female-unmarried
-				 */
+				 *************************************/
+				
 				totalPop = Integer.parseInt(line.substring(300, 309));
-				//				malePop = Integer.parseInt(line.substring(363, 372));
-				//				femalePop = Integer.parseInt(line.substring(372, 381));
+				malePop = Integer.parseInt(line.substring(363, 372));
+				femalePop = Integer.parseInt(line.substring(372, 381));
 
 				maleUnmarried = Integer.parseInt(line.substring(4422, 4431)); 
 				femaleUnmarried = Integer.parseInt(line.substring(4467, 4476));
@@ -89,14 +92,14 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				word.set(state + "@maleUnmarried-femaleUnmarried");
 				output.set(maleUnmarried + "/" + femaleUnmarried + "/" + totalPop);
 				context.write(word, output);
+
+				/*************************************
+				 * Male 18 and under/female 18 and under
+				 *************************************/
 				
-				/*
-				 * Male 18 and under/femail 18 and under
-				 */
 				int maleUnder18 = 0;
 				int femaleUnder18 = 0;
 				int start, end;
-				
 				/*
 				 * Males aged 18 and under
 				 * Start index = 3864, end = 3981
@@ -108,7 +111,6 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 					maleUnder18 += Integer.parseInt(line.substring(start, end));
 					start += 9;
 				}
-				
 				/*
 				 * Females aged 18 and under
 				 * Start index = 4143, end = 4260
@@ -120,9 +122,73 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 					femaleUnder18 += Integer.parseInt(line.substring(start, end));
 					start += 9;
 				}
-				
 				word.set(state + "@male18-female18");
 				output.set(maleUnder18 + "/" + femaleUnder18 + "/" + totalPop);
+				context.write(word, output);
+
+				/*************************************
+				 * Male 19 to 29/female 19 to 29
+				 *************************************/
+				
+				int male19to29 = 0;
+				int female19to29 = 0;
+				/*
+				 * Males aged 19 to 29
+				 * Start index = 3981, end = 4026
+				 * (4026-3981)/9 = 5
+				 */
+				start = 3981;
+				for (int i = 0; i<5; i++) {
+					end = start + 9;
+					male19to29 += Integer.parseInt(line.substring(start, end));
+					start += 9;
+				}
+				/*
+				 * Females aged 19 to 29
+				 * Start index = 4260, end = 4305
+				 * (4305-4260)/9 = 5
+				 */
+				start = 4260;
+				for (int i = 0; i<5; i++) {
+					end = start + 9;
+					female19to29 += Integer.parseInt(line.substring(start, end));
+					start += 9;
+				}
+				word.set(state + "@male19to29-female19to29");
+				output.set(male19to29 + "/" + female19to29 + "/" + totalPop);
+				context.write(word, output);
+
+				
+				/*************************************
+				 * Male 30 to 39/female 30 to 39
+				 *************************************/
+				
+				int male30to39 = 0;
+				int female30to39 = 0;
+				/*
+				 * Males aged 30 to 39
+				 * Start index = 4026, end = 4044
+				 * (4044-4026)/9 = 2
+				 */
+				start = 4026;
+				for (int i = 0; i<2; i++) {
+					end = start + 9;
+					male30to39 += Integer.parseInt(line.substring(start, end));
+					start += 9;
+				}
+				/*
+				 * Females aged 30 to 39
+				 * Start index = 4305, end = 4323
+				 * (4323-4305)/9 = 2
+				 */
+				start = 4305;
+				for (int i = 0; i<2; i++) {
+					end = start + 9;
+					female30to39 += Integer.parseInt(line.substring(start, end));
+					start += 9;
+				}
+				word.set(state + "@male30to39-female30to39");
+				output.set(male30to39 + "/" + female30to39 + "/" + totalPop);
 				context.write(word, output);
 
 			}
@@ -139,7 +205,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				urbanInside = Integer.parseInt(line.substring(1857, 1866));
 				urbanOutside = Integer.parseInt(line.substring(1866, 1875));
 				rural = Integer.parseInt(line.substring(1875, 1884));
-				
+
 				word.set(state + "@rural-urban");
 				output.set(rural + "/" + (urbanInside + urbanOutside));
 				context.write(word, output);
