@@ -79,7 +79,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 			if (logicalRecordPart == 1) {
 
 				/*************************************
-				 * Male-unarried vs. female-unmarried
+				 * Q(2) Male-unarried vs. female-unmarried
 				 *************************************/
 				
 				totalPop = Integer.parseInt(line.substring(300, 309));
@@ -94,7 +94,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				context.write(word, output);
 
 				/*************************************
-				 * Male 18 and under/female 18 and under
+				 * Q(3a) Male 18 and under/female 18 and under
 				 *************************************/
 				
 				int maleUnder18 = 0;
@@ -127,7 +127,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				context.write(word, output);
 
 				/*************************************
-				 * Male 19 to 29/female 19 to 29
+				 * Q(3b) Male 19 to 29/female 19 to 29
 				 *************************************/
 				
 				int male19to29 = 0;
@@ -160,7 +160,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 
 				
 				/*************************************
-				 * Male 30 to 39/female 30 to 39
+				 * Q(3c) Male 30 to 39/female 30 to 39
 				 *************************************/
 				
 				int male30to39 = 0;
@@ -193,15 +193,19 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 
 			}
 			if (logicalRecordPart == 2) {
-				// Rented vs. owned
+				/*************************************
+				 * Q(1) Rented vs. owned
+				 *************************************/
 				rented = Integer.parseInt(line.substring(1812, 1821));
 				owned = Integer.parseInt(line.substring(1803, 1812));
 
 				word.set(state + "@rent-own");
 				output.set(rented + "/" + owned);
 				context.write(word, output);
-
-				// Urban vs. rural
+				
+				/*************************************
+				 * Q(4) Urban vs. rural
+				 *************************************/
 				urbanInside = Integer.parseInt(line.substring(1857, 1866));
 				urbanOutside = Integer.parseInt(line.substring(1866, 1875));
 				rural = Integer.parseInt(line.substring(1875, 1884));
@@ -209,6 +213,12 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				word.set(state + "@rural-urban");
 				output.set(rural + "/" + (urbanInside + urbanOutside));
 				context.write(word, output);
+				
+				/*************************************
+				 * Q(5) Median house value (owner occupied)
+				 *************************************/
+				
+				
 			}
 
 		}// END While loop
