@@ -26,7 +26,7 @@ public class CensusDriver {
 		// The census job runner
 		CensusDataJob censusJob = new CensusDataJob(input, output);
 		try {
-			status = censusJob.versus();
+			status = censusJob.start();
 		} catch (IllegalArgumentException | ClassNotFoundException
 				| IOException | InterruptedException e) {
 			System.out.println("Error starting Census map reduce job: ");

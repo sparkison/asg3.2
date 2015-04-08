@@ -18,8 +18,9 @@ import org.apache.hadoop.mapreduce.Mapper;
  * <state@rent-own, "count-rented/count-owned"> 												– Used for Q1 analysis
  * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-population"> 	– Used for Q2 analysis
  * <state@rural-urban, "count-rural/count-urban"> 												– Used for Q4 analysis
+ * <state@male18-female18, "male-under18/female-under18/total-population"> 						– Used for Q3(a) analysis
  */
-public class CensusVersusGrabber extends Mapper<LongWritable, Text, Text, Text> {
+public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 
 	private final static int MAX_LEVEL = 100;
 	private static Text word = new Text();
@@ -74,7 +75,10 @@ public class CensusVersusGrabber extends Mapper<LongWritable, Text, Text, Text> 
 			 */			
 
 			if (logicalRecordPart == 1) {
-				// Male-unarried vs. female-unmarried
+				
+				/*
+				 * Male-unarried vs. female-unmarried
+				 */
 				totalPop = Integer.parseInt(line.substring(300, 309));
 				//				malePop = Integer.parseInt(line.substring(363, 372));
 				//				femalePop = Integer.parseInt(line.substring(372, 381));
@@ -84,6 +88,41 @@ public class CensusVersusGrabber extends Mapper<LongWritable, Text, Text, Text> 
 
 				word.set(state + "@maleUnmarried-femaleUnmarried");
 				output.set(maleUnmarried + "/" + femaleUnmarried + "/" + totalPop);
+				context.write(word, output);
+				
+				/*
+				 * Male 18 and under/femail 18 and under
+				 */
+				int maleUnder18 = 0;
+				int femaleUnder18 = 0;
+				int start, end;
+				
+				/*
+				 * Males aged 18 and under
+				 * Start index = 3864, end = 3981
+				 * (3981-3864)/9 = 13
+				 */
+				start = 3864;
+				for (int i = 0; i<13; i++) {
+					end = start + 9;
+					maleUnder18 += Integer.parseInt(line.substring(start, end));
+					start += 9;
+				}
+				
+				/*
+				 * Females aged 18 and under
+				 * Start index = 4143, end = 4260
+				 * (4260-4143)/9 = 13
+				 */
+				start = 4143;
+				for (int i = 0; i<13; i++) {
+					end = start + 9;
+					femaleUnder18 += Integer.parseInt(line.substring(start, end));
+					start += 9;
+				}
+				
+				word.set(state + "@male18-female18");
+				output.set(maleUnder18 + "/" + femaleUnder18 + "/" + totalPop);
 				context.write(word, output);
 
 			}

@@ -16,8 +16,9 @@ import org.apache.hadoop.mapreduce.Reducer;
  * <state@rent-own, "count-rented/count-owned"> 												– Used for Q1 analysis
  * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-population"> 	– Used for Q2 analysis
  * <state@rural-urban, "count-rural/count-urban"> 												– Used for Q4 analysis
+ * <state@male18-female18, "male-under18/female-under18/total-population"> 						– Used for Q3(a) analysis
  */
-public class CensusVersusReducer extends Reducer<Text, Text, Text, Text> {
+public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 
 	private static Text result = new Text();
 	private static Text word = new Text();
@@ -94,6 +95,27 @@ public class CensusVersusReducer extends Reducer<Text, Text, Text, Text> {
 			context.write(word, result);
 			
 			word.set(key.toString().split("@")[0] + " % Urban households");
+			result.set(count2 + "/" + total);
+			context.write(word, result);
+			
+		}
+		/*
+		 * If here, doing male/female percent under 18
+		 */
+		if (versusType.equals("male18-female18")) {
+			
+			for (Text value : values) {
+				String[] split = value.toString().split("/");
+				count += Integer.parseInt(split[0]);
+				count2 += Integer.parseInt(split[1]);
+				total += Integer.parseInt(split[2]);
+			}
+						
+			word.set(key.toString().split("@")[0] + " % Male 18 and under");
+			result.set(count + "/" + total);
+			context.write(word, result);
+			
+			word.set(key.toString().split("@")[0] + " % Female 18 and under");
 			result.set(count2 + "/" + total);
 			context.write(word, result);
 			

@@ -16,8 +16,8 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-import cs455.map.CensusVersusGrabber;
-import cs455.reduce.CensusVersusReducer;
+import cs455.map.CensusMapper;
+import cs455.reduce.CensusReducer;
 
 public class CensusDataJob {
 
@@ -41,7 +41,7 @@ public class CensusDataJob {
 	 * This is the job for the Census versus analysis
 	 * It is used for the Questions related to comparisons (this vs. that)
 	 */
-	public int versus() throws IllegalArgumentException, IOException, ClassNotFoundException, InterruptedException{
+	public int start() throws IllegalArgumentException, IOException, ClassNotFoundException, InterruptedException{
 
 		Configuration conf = new Configuration();
 		FileSystem fs = FileSystem.get(conf);
@@ -58,8 +58,8 @@ public class CensusDataJob {
 		job.setJarByClass(CensusDataJob.class);
 
 		// Set Map, Partition, Combiner, and Reducer classes
-		job.setMapperClass(CensusVersusGrabber.class);
-		job.setReducerClass(CensusVersusReducer.class);
+		job.setMapperClass(CensusMapper.class);
+		job.setReducerClass(CensusReducer.class);
 
 		// Set the Map output types
 		job.setMapOutputKeyClass(Text.class);
