@@ -41,7 +41,11 @@ public class CensusDataJob {
 		return new String(outputPath);
 	}
 	
-	public void versus() throws IllegalArgumentException, IOException, ClassNotFoundException, InterruptedException{
+	/*
+	 * This is the job for the Census versus analysis
+	 * It is used for the Questions related to comparisons (this vs. that)
+	 */
+	public int versus() throws IllegalArgumentException, IOException, ClassNotFoundException, InterruptedException{
 
 		Configuration conf = new Configuration();
 		FileSystem fs = FileSystem.get(conf);
@@ -54,7 +58,7 @@ public class CensusDataJob {
 			fs.delete(outPath, true);
 		}
 
-		Job job = Job.getInstance(conf, "Census data");
+		Job job = Job.getInstance(conf, "Census versus analysis");
 		job.setJarByClass(CensusDataJob.class);
 
 		// Set Map, Partition, Combiner, and Reducer classes
@@ -73,7 +77,7 @@ public class CensusDataJob {
 		FileOutputFormat.setOutputPath(job, outPath);
 
 		// Block for job to complete...
-		System.exit(job.waitForCompletion(true) ? 0 : 1);
+		return job.waitForCompletion(true) ? 0 : 1;
 	}
 	
 }

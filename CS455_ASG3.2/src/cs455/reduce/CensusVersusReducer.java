@@ -18,9 +18,9 @@ import org.apache.hadoop.mapreduce.Reducer.Context;
 
 /*
  * Input formats: 
- * <state@rent-own, "count-rented/count-owned"> – Used for Q1 analysis
- * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-population"> – Used for Q2 analysis
- * <state@rural-urban, "count-rural/count-urban"> – Used for Q4 analysis
+ * <state@rent-own, "count-rented/count-owned"> 												– Used for Q1 analysis
+ * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-population"> 	– Used for Q2 analysis
+ * <state@rural-urban, "count-rural/count-urban"> 												– Used for Q4 analysis
  */
 public class CensusVersusReducer extends Reducer<Text, Text, Text, Text> {
 
@@ -59,7 +59,7 @@ public class CensusVersusReducer extends Reducer<Text, Text, Text, Text> {
 			result.set(count2 + "/" + total);
 			context.write(word, result);
 			
-		} 
+		}
 		/*
 		 * If here, doing male-unmarried vs. female-unmarried comparison
 		 */
