@@ -17,6 +17,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import cs455.map.CensusMapper;
+import cs455.partition.CensusPartitioner;
 import cs455.reduce.CensusReducer;
 
 public class CensusDataJob {
@@ -59,6 +60,7 @@ public class CensusDataJob {
 
 		// Set Map, Partition, Combiner, and Reducer classes
 		job.setMapperClass(CensusMapper.class);
+		job.setPartitionerClass(CensusPartitioner.class);
 		job.setReducerClass(CensusReducer.class);
 
 		// Set the Map output types

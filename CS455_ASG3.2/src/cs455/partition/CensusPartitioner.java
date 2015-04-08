@@ -6,6 +6,18 @@
 
 package cs455.partition;
 
-public class CensusPartitioner {
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Partitioner;
 
+public class CensusPartitioner extends Partitioner<LongWritable, Text> {
+
+	@Override
+	public int getPartition(LongWritable key, Text value, int numReduceTasks) {
+		
+		//TODO implement
+		return 0;
+		
+	}
+	
 }
