@@ -61,6 +61,7 @@ public class CensusDataJob {
 		// Set Map, Partition, Combiner, and Reducer classes
 		job.setMapperClass(CensusMapper.class);
 		job.setPartitionerClass(CensusPartitioner.class);
+		job.setNumReduceTasks(8);
 		job.setReducerClass(CensusReducer.class);
 
 		// Set the Map output types
