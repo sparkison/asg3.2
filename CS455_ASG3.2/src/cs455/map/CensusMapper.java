@@ -21,6 +21,7 @@ import org.apache.hadoop.mapreduce.Mapper;
  * <state@male18-female18, "male-under18/female-under18/total-population"> 						– Used for Q3(a) analysis
  * <state@male19to29-female19to29, "male-19to29/female-19to29/total-population"> 				– Used for Q3(b) analysis
  * <state@male30to39-female30to39, "male-30to39/female-30to39/total-population"> 				– Used for Q3(c) analysis
+ * <state@home-value, "value-range/count-of-range"> 											– Used for Q5 analysis
  */
 public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 
@@ -220,6 +221,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				int start, end;
 				int homeValue;
 				String[] houseVals = getHouseValueRanges();
+				word.set(state + "@home-value");
 				/*
 				 * Start index = 2928, end = 3108
 				 * (3108-2928)/9 = 20
@@ -228,6 +230,8 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				for (int i = 0; i<20; i++) {
 					end = start + 9;
 					homeValue = Integer.parseInt(line.substring(start, end));
+					output.set(houseVals[i] + "/" + homeValue);
+					context.write(word, output);
 					start += 9;
 				}
 				

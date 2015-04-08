@@ -19,6 +19,7 @@ import org.apache.hadoop.mapreduce.Reducer;
  * <state@male18-female18, "male-under18/female-under18/total-population"> 						– Used for Q3(a) analysis
  * <state@male19to29-female19to29, "male-19to29/female-19to29/total-population"> 				– Used for Q3(b) analysis
  * <state@male30to39-female30to39, "male-30to39/female-30to39/total-population"> 				– Used for Q3(c) analysis
+ * <state@home-value, "value-range/count-of-range"> 											– Used for Q5 analysis
  */
 public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 
@@ -147,6 +148,27 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		 * If here, doing male/female percent aged 30 to 39
 		 */
 		if (versusType.equals("male30to39-female30to39")) {
+			
+			for (Text value : values) {
+				String[] split = value.toString().split("/");
+				count += Integer.parseInt(split[0]);
+				count2 += Integer.parseInt(split[1]);
+				total += Integer.parseInt(split[2]);
+			}
+						
+			word.set(key.toString().split("@")[0] + " % Male age 30 to 39 (of total pop)");
+			result.set(count + "/" + total);
+			context.write(word, result);
+			
+			word.set(key.toString().split("@")[0] + " % Female age 30 to 39 (of total pop)");
+			result.set(count2 + "/" + total);
+			context.write(word, result);
+			
+		}
+		/*
+		 * If here, finding median home value
+		 */
+		if (versusType.equals("home-value")) {
 			
 			for (Text value : values) {
 				String[] split = value.toString().split("/");

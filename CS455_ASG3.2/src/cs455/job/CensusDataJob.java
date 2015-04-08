@@ -55,7 +55,7 @@ public class CensusDataJob {
 			fs.delete(outPath, true);
 		}
 
-		Job job = Job.getInstance(conf, "Census versus analysis");
+		Job job = Job.getInstance(conf, "Census analysis");
 		job.setJarByClass(CensusDataJob.class);
 
 		// Set Map, Partition, Combiner, and Reducer classes

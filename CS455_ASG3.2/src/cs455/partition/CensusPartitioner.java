@@ -42,6 +42,10 @@ public class CensusPartitioner extends Partitioner<Text, Text> {
 		if (versusType.equals("rural-urban")) {
 			return 3;
 		}
+		// Q5
+		if (versusType.equals("home-value")) {
+			return 4;
+		}
 
 		return 0;
 
