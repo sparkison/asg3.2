@@ -82,7 +82,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				/*************************************
 				 * Q(2) Male-unarried vs. female-unmarried
 				 *************************************/
-				
+
 				totalPop = Integer.parseInt(line.substring(300, 309));
 				malePop = Integer.parseInt(line.substring(363, 372));
 				femalePop = Integer.parseInt(line.substring(372, 381));
@@ -97,7 +97,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				/*************************************
 				 * Q(3a) Male 18 and under/female 18 and under
 				 *************************************/
-				
+
 				int maleUnder18 = 0;
 				int femaleUnder18 = 0;
 				int start, end;
@@ -130,7 +130,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				/*************************************
 				 * Q(3b) Male 19 to 29/female 19 to 29
 				 *************************************/
-				
+
 				int male19to29 = 0;
 				int female19to29 = 0;
 				/*
@@ -159,11 +159,11 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				output.set(male19to29 + "/" + female19to29 + "/" + totalPop);
 				context.write(word, output);
 
-				
+
 				/*************************************
 				 * Q(3c) Male 30 to 39/female 30 to 39
 				 *************************************/
-				
+
 				int male30to39 = 0;
 				int female30to39 = 0;
 				/*
@@ -203,7 +203,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				word.set(state + "@rent-own");
 				output.set(rented + "/" + owned);
 				context.write(word, output);
-				
+
 				/*************************************
 				 * Q(4) Urban vs. rural
 				 *************************************/
@@ -214,7 +214,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				word.set(state + "@rural-urban");
 				output.set(rural + "/" + (urbanInside + urbanOutside));
 				context.write(word, output);
-				
+
 				/*************************************
 				 * Q(5) Median house value (owner occupied)
 				 *************************************/
@@ -234,13 +234,13 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 					context.write(word, output);
 					start += 9;
 				}
-				
+
 			}
 
 		}// END While loop
 
 	}// END map
-	
+
 	// Helper methods
 	public String[] getHouseValueRanges(){
 		String[] houseVals = new String[20];
@@ -263,8 +263,31 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 		houseVals[16] = "$250,000 - $299,999";
 		houseVals[17] = "$300,000 - $399,999";
 		houseVals[18] = "$400,000 - $499,999";
-		houseVals[19] = "$500,000 - $500,000";
+		houseVals[19] = "$500,000 - $999,999"; // The "$999,999" is simply a placeholder for checking max
 		return houseVals;
+	}
+
+	// Helper methods
+	public String[] getHouseRentValueRanges(){
+		String[] rentVals = new String[17];
+		rentVals[0] = "$0 - $100";
+		rentVals[1] = "$100 - $149";
+		rentVals[2] = "$150 - $199";
+		rentVals[3] = "$200 - $249";
+		rentVals[4] = "$250 - $299";
+		rentVals[5] = "$300 - $349";
+		rentVals[6] = "$350 - $399";
+		rentVals[7] = "$400 - $449";
+		rentVals[8] = "$450 - $499";
+		rentVals[9] = "$500 - $549";
+		rentVals[10] = "$550 - $599";
+		rentVals[11] = "$600 - $649";
+		rentVals[12] = "$650 - $699";
+		rentVals[13] = "$700 - $749";
+		rentVals[14] = "$750 - $999";
+		rentVals[15] = "$1000 - $9999"; // The "$9999" is simply a placeholder for checking max
+		rentVals[16] = "no cash - no cash";
+		return rentVals;
 	}
 
 }

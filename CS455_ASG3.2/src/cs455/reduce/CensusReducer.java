@@ -219,7 +219,10 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			Collections.sort(rangeList);
 			
 			word.set(type[0] + " median house value");
-			result.set("$" + formatter.format(rangeList.get(0)) + " - $" + formatter.format(rangeList.get(3)));
+			if (rangeList.get(3) > 500000)
+				result.set("$" + formatter.format(rangeList.get(0)) + " - more");
+			else
+				result.set("$" + formatter.format(rangeList.get(0)) + " - $" + formatter.format(rangeList.get(3)));
 			context.write(word, result);
 			
 		}
