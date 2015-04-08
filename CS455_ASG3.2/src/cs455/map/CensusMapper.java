@@ -217,12 +217,50 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				/*************************************
 				 * Q(5) Median house value (owner occupied)
 				 *************************************/
-				
+				int start, end;
+				int homeValue;
+				String[] houseVals = getHouseValueRanges();
+				/*
+				 * Start index = 2928, end = 3108
+				 * (3108-2928)/9 = 20
+				 */
+				start = 2928;
+				for (int i = 0; i<20; i++) {
+					end = start + 9;
+					homeValue = Integer.parseInt(line.substring(start, end));
+					start += 9;
+				}
 				
 			}
 
 		}// END While loop
 
 	}// END map
+	
+	// Helper methods
+	public String[] getHouseValueRanges(){
+		String[] houseVals = new String[20];
+		houseVals[0] = "Less than $15,000";
+		houseVals[1] = "$15,000 - $19,999";
+		houseVals[2] = "$20,000 - $24,999";
+		houseVals[3] = "$25,000 - $29,999";
+		houseVals[4] = "$30,000 - $34,999";
+		houseVals[5] = "$35,000 - $39,999";
+		houseVals[6] = "$40,000 - $44,999";
+		houseVals[7] = "$45,000 - $49,999";
+		houseVals[8] = "$50,000 - $59,999";
+		houseVals[9] = "$60,000 - $74,999";
+		houseVals[10] = "$75,000 - $99,999";
+		houseVals[11] = "$100,000 - $124,999";
+		houseVals[12] = "$125,000 - $149,999";
+		houseVals[13] = "$150,000 - $174,999";
+		houseVals[14] = "$175,000 - $199,999";
+		houseVals[15] = "$200,000 - $249,999";
+		houseVals[16] = "$250,000 - $299,999";
+		houseVals[17] = "$300,000 - $399,999";
+		houseVals[18] = "$400,000 - $499,999";
+		houseVals[19] = "$500,000 or more";
+		return houseVals;
+	}
 
 }
