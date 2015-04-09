@@ -258,7 +258,8 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			}
 			
 			/*
-			 * List size is 17, so grab the middle value
+			 * List size is 17, so simply grab the middle value
+			 * from the sorted array
 			 */
 			word.set(type[0] + " median rent paid");
 			result.set(sortedValMap.get(sortedIndex.get(8)));
