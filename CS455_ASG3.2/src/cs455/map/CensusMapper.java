@@ -295,7 +295,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				}
 
 				/*************************************
-				 * Q(7) Avg number of rooms
+				 * Q(7) Avg. number of rooms
 				 *************************************/
 				String[] numRooms = rb.getRoomValueRange();
 				word.set(state + "@number-rooms");
