@@ -306,7 +306,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			}
 
 			word.set(type[0] + " Aged 85 and greater");
-			result.set(count + "/" + total + " = " + getPercent(count, total) + "%");
+			result.set(count + "/" + total);
 			context.write(word, result);
 
 		}
