@@ -60,16 +60,21 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				continue;
 
 			// Get record information
-			logicalRecord = Integer.parseInt(line.substring(18, 24));
-			logicalRecordPart = Integer.parseInt(line.substring(24, 28));
-			totalRecordParts = Integer.parseInt(line.substring(28, 32));
+			logicalRecordPart = 0;
+			try {
+				logicalRecord = Integer.parseInt(line.substring(18, 24));
+				logicalRecordPart = Integer.parseInt(line.substring(24, 28));
+				totalRecordParts = Integer.parseInt(line.substring(28, 32));
+			} catch (NumberFormatException e) {
+				continue;
+			}
 
 			// Sanity check; used for debugging
-			String result = "State:\t" + state + 
-					", Summary level:\t" + summaryLevel + 
-					", Logical Record:\t" + logicalRecord + 
-					", Record Part:\t" + logicalRecordPart + 
-					", Total Record Parts:\t" + totalRecordParts;
+			//			String result = "State:\t" + state + 
+			//					", Summary level:\t" + summaryLevel + 
+			//					", Logical Record:\t" + logicalRecord + 
+			//					", Record Part:\t" + logicalRecordPart + 
+			//					", Total Record Parts:\t" + totalRecordParts;
 
 
 			/*
@@ -235,7 +240,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 					context.write(word, output);
 					start += 9;
 				}
-				
+
 				/*************************************
 				 * Q(6) Median house value (owner occupied)
 				 *************************************/

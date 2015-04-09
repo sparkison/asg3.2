@@ -33,155 +33,155 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 
 	private static Text result = new Text();
 	private static Text word = new Text();
-	
+
 	@Override
 	public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 
 		int count = 0;
 		int count2 = 0;
 		int total = 0;
-		
+
 		// Used to determine what type of analysis we're doing
 		String[] type = key.toString().split("@");
 		String versusType = type[1].trim();
-		
+
 		/*
 		 * If here, doing rent vs. owned comparison
 		 */
 		if (versusType.equals("rent-own")) {
-			
+
 			for (Text value : values) {
 				String[] split = value.toString().split("/");
 				count += Integer.parseInt(split[0]);
 				count2 += Integer.parseInt(split[1]);
 			}
-			
+
 			total = count + count2;
-			
+
 			word.set(type[0] + " % Rent");
-			result.set(count + "/" + total);
+			result.set(count + "/" + total + " = " + getPercent(count, total) + "%");
 			context.write(word, result);
-			
+
 			word.set(type[0] + " % Own");
-			result.set(count2 + "/" + total);
+			result.set(count2 + "/" + total + " = " + getPercent(count2, total) + "%");
 			context.write(word, result);
-			
+
 		}
 		/*
 		 * If here, doing male-unmarried vs. female-unmarried comparison
 		 */
 		if (versusType.equals("maleUnmarried-femaleUnmarried")) {
-			
+
 			for (Text value : values) {
 				String[] split = value.toString().split("/");
 				count += Integer.parseInt(split[0]);
 				count2 += Integer.parseInt(split[1]);
 				total += Integer.parseInt(split[2]);
 			}
-						
+
 			word.set(type[0] + " % Male never married (of total pop)");
-			result.set(count + "/" + total);
+			result.set(count + "/" + total + " = " + getPercent(count, total) + "%");
 			context.write(word, result);
-			
+
 			word.set(type[0] + " % Female never married (of total pop)");
-			result.set(count2 + "/" + total);
+			result.set(count2 + "/" + total + " = " + getPercent(count2, total) + "%");
 			context.write(word, result);
-			
+
 		}
 		/*
 		 * If here, doing rural vs. urban comparison
 		 */
 		if (versusType.equals("rural-urban")) {
-			
+
 			for (Text value : values) {
 				String[] split = value.toString().split("/");
 				count += Integer.parseInt(split[0]);
 				count2 += Integer.parseInt(split[1]);
 			}
-			
+
 			total = count + count2;
-			
+
 			word.set(type[0] + " % Rural households");
-			result.set(count + "/" + total);
+			result.set(count + "/" + total + " = " + getPercent(count, total) + "%");
 			context.write(word, result);
-			
+
 			word.set(type[0] + " % Urban households");
-			result.set(count2 + "/" + total);
+			result.set(count2 + "/" + total + " = " + getPercent(count2, total) + "%");
 			context.write(word, result);
-			
+
 		}
 		/*
 		 * If here, doing male/female percent under 18
 		 */
 		if (versusType.equals("male18-female18")) {
-			
+
 			for (Text value : values) {
 				String[] split = value.toString().split("/");
 				count += Integer.parseInt(split[0]);
 				count2 += Integer.parseInt(split[1]);
 				total += Integer.parseInt(split[2]);
 			}
-						
+
 			word.set(type[0] + " % Male 18 and under (of total pop)");
-			result.set(count + "/" + total);
+			result.set(count + "/" + total + " = " + getPercent(count, total) + "%");
 			context.write(word, result);
-			
+
 			word.set(type[0] + " % Female 18 and under (of total pop)");
-			result.set(count2 + "/" + total);
+			result.set(count2 + "/" + total + " = " + getPercent(count2, total) + "%");
 			context.write(word, result);
-			
+
 		}
 		/*
 		 * If here, doing male/female percent aged 19 to 29
 		 */
 		if (versusType.equals("male19to29-female19to29")) {
-			
+
 			for (Text value : values) {
 				String[] split = value.toString().split("/");
 				count += Integer.parseInt(split[0]);
 				count2 += Integer.parseInt(split[1]);
 				total += Integer.parseInt(split[2]);
 			}
-						
+
 			word.set(type[0] + " % Male age 19 to 29 (of total pop)");
-			result.set(count + "/" + total);
+			result.set(count + "/" + total + " = " + getPercent(count, total) + "%");
 			context.write(word, result);
-			
+
 			word.set(type[0] + " % Female age 19 to 29 (of total pop)");
-			result.set(count2 + "/" + total);
+			result.set(count2 + "/" + total + " = " + getPercent(count2, total) + "%");
 			context.write(word, result);
-			
+
 		}
 		/*
 		 * If here, doing male/female percent aged 30 to 39
 		 */
 		if (versusType.equals("male30to39-female30to39")) {
-			
+
 			for (Text value : values) {
 				String[] split = value.toString().split("/");
 				count += Integer.parseInt(split[0]);
 				count2 += Integer.parseInt(split[1]);
 				total += Integer.parseInt(split[2]);
 			}
-						
+
 			word.set(type[0] + " % Male age 30 to 39 (of total pop)");
-			result.set(count + "/" + total);
+			result.set(count + "/" + total + " = " + getPercent(count, total) + "%");
 			context.write(word, result);
-			
+
 			word.set(type[0] + " % Female age 30 to 39 (of total pop)");
-			result.set(count2 + "/" + total);
+			result.set(count2 + "/" + total + " = " + getPercent(count2, total) + "%");
 			context.write(word, result);
-			
+
 		}
 		/*
 		 * If here, finding median home value
 		 */
 		if (versusType.equals("home-value")) {
-			
+
 			Map<String, Integer> houseValMap = new HashMap<String, Integer>();
 			Map<Integer, String> sortedValMap = new TreeMap<Integer, String>();
 			String valRange;
-			
+
 			for (Text value : values) {
 				String[] split = value.toString().split("=");
 				valRange = split[0].trim();
@@ -193,49 +193,54 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 					houseValMap.put(valRange, count);
 				}
 			}
-			
+
 			// Sort the results by value
 			for (String range : houseValMap.keySet()) {
 				sortedValMap.put(houseValMap.get(range), range);
 			}
+			// Add sorted keys to list to get specific indices
 			List<Integer> sortedIndex = new ArrayList<Integer>();
 			for (Integer index : sortedValMap.keySet()) {
 				sortedIndex.add(index);
 			}
-			
+
 			/*
 			 * List size is 20, so grab the two middle values, 
 			 * median range will be between highest and lowest of these
-			 * two ranges
+			 * two ranges (?)
 			 */
 			DecimalFormat formatter = new DecimalFormat("#,###");
 			String rangeOne = sortedValMap.get(sortedIndex.get(9));
 			String rangeTwo = sortedValMap.get(sortedIndex.get(10));
-			
-			List<Integer> rangeList = new ArrayList<Integer>();
-			rangeList.add(Integer.parseInt(rangeOne.split(" - ")[0].replaceAll("[^0-9]", "")));
-			rangeList.add(Integer.parseInt(rangeOne.split(" - ")[1].replaceAll("[^0-9]", "")));
-			rangeList.add(Integer.parseInt(rangeTwo.split(" - ")[0].replaceAll("[^0-9]", "")));
-			rangeList.add(Integer.parseInt(rangeTwo.split(" - ")[1].replaceAll("[^0-9]", "")));
-			Collections.sort(rangeList);
-			
+
+			//			List<Integer> rangeList = new ArrayList<Integer>();
+			//			rangeList.add(Integer.parseInt(rangeOne.split(" - ")[0].replaceAll("[^0-9]", "")));
+			//			rangeList.add(Integer.parseInt(rangeOne.split(" - ")[1].replaceAll("[^0-9]", "")));
+			//			rangeList.add(Integer.parseInt(rangeTwo.split(" - ")[0].replaceAll("[^0-9]", "")));
+			//			rangeList.add(Integer.parseInt(rangeTwo.split(" - ")[1].replaceAll("[^0-9]", "")));
+			//			Collections.sort(rangeList);
+			//			
+			//			word.set(type[0] + " median house value");
+			//			if (rangeList.get(3) > 500000)
+			//				result.set("$" + formatter.format(rangeList.get(0)) + " - more than $500,000");
+			//			else
+			//				result.set("$" + formatter.format(rangeList.get(0)) + " - $" + formatter.format(rangeList.get(3)));
+			//			context.write(word, result);
+
+			result.set("Between " + rangeOne + " and " + rangeTwo);
 			word.set(type[0] + " median house value");
-			if (rangeList.get(3) > 500000)
-				result.set("$" + formatter.format(rangeList.get(0)) + " - more");
-			else
-				result.set("$" + formatter.format(rangeList.get(0)) + " - $" + formatter.format(rangeList.get(3)));
 			context.write(word, result);
-			
+
 		}
 		/*
 		 * If here, finding median rental value
 		 */
 		if (versusType.equals("rent-value")) {
-			
+
 			Map<String, Integer> houseValMap = new HashMap<String, Integer>();
 			Map<Integer, String> sortedValMap = new TreeMap<Integer, String>();
 			String valRange;
-			
+
 			for (Text value : values) {
 				String[] split = value.toString().split("=");
 				valRange = split[0].trim();
@@ -247,7 +252,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 					houseValMap.put(valRange, count);
 				}
 			}
-			
+
 			// Sort the results by value
 			for (String range : houseValMap.keySet()) {
 				sortedValMap.put(houseValMap.get(range), range);
@@ -256,7 +261,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			for (Integer index : sortedValMap.keySet()) {
 				sortedIndex.add(index);
 			}
-			
+
 			/*
 			 * List size is 17, so simply grab the middle value
 			 * from the sorted array
@@ -264,9 +269,14 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			word.set(type[0] + " median rent paid");
 			result.set(sortedValMap.get(sortedIndex.get(8)));
 			context.write(word, result);
-			
+
 		}
 
 	}
-	
+
+	private float getPercent(int num, int denom){
+		float percent = num * 100f / denom;
+		return percent;
+	}
+
 }
