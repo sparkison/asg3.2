@@ -28,6 +28,8 @@ import org.apache.hadoop.mapreduce.Reducer;
  * <state@male30to39-female30to39, "male-30to39/female-30to39/total-population"> 				– Used for Q3(c) analysis
  * <state@home-value, "value-range/count-of-range"> 											– Used for Q5 analysis
  * <state@rent-value, "value-range/count-of-range"> 											– Used for Q6 analysis
+ * <state@number-rooms, "number-of-rooms/count"> 												– Used for Q7 analysis
+ * <state@maleOver85-femalOver85, "male-85-and-older/female-85-and-older"> 						– Used for Q8 analysis
  */
 public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 
@@ -281,6 +283,20 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			result.set(sortedValMap.get(sortedIndex.get(8)));
 			context.write(word, result);
 
+		}
+		
+		/*************************************
+		 * Q(7) 95'th percentile number of rooms
+		 *************************************/
+		if (inputType.equals("number-rooms")) {
+			//TODO
+		}
+		
+		/*************************************
+		 * Q(8) Population over 85
+		 *************************************/
+		if (inputType.equals("maleOver85-femalOver85")) {
+			//TODO
 		}
 
 	}

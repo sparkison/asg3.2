@@ -23,6 +23,8 @@ import org.apache.hadoop.mapreduce.Mapper;
  * <state@male30to39-female30to39, "male-30to39/female-30to39/total-population"> 				– Used for Q3(c) analysis
  * <state@home-value, "value-range/count-of-range"> 											– Used for Q5 analysis
  * <state@rent-value, "value-range/count-of-range"> 											– Used for Q6 analysis
+ * <state@number-rooms, "number-of-rooms/count"> 												– Used for Q7 analysis
+ * <state@maleOver85-femalOver85, "male-85-and-older/female-85-and-older"> 						– Used for Q8 analysis
  */
 public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 
@@ -202,6 +204,29 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				word.set(state + "@male30to39-female30to39");
 				output.set(male30to39 + "/" + female30to39 + "/" + totalPop);
 				context.write(word, output);
+				
+				/*************************************
+				 * Q(8) Population over 85
+				 *************************************/
+				int maleOver85 = 0;
+				int femalOver85 = 0;
+				
+				/*
+				 * Males aged 85 and older
+				 * Start index = 4134
+				 */
+				start = 4134;
+				
+				
+				/*
+				 * Females aged 85 and older
+				 * Start index = 4413
+				 */
+				start = 4413;
+				
+				word.set(state + "@maleOver85-femalOver85");
+				output.set(male30to39 + "/" + female30to39 + "/" + totalPop);
+				context.write(word, output);
 
 			}
 			if (logicalRecordPart == 2) {
@@ -264,6 +289,10 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 					start += 9;
 				}
 
+				/*************************************
+				 * Q(7) Avg number of rooms
+				 *************************************/
+				word.set(state + "@number-rooms");
 			}
 
 		}// END While loop
