@@ -18,6 +18,8 @@ import java.util.TreeMap;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
+import cs455.util.RangeBuilder;
+
 /*
  * Input formats: 
  * <state@rent-own, "count-rented/count-owned"> 												– Used for Q1 analysis
@@ -35,6 +37,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 
 	private static Text result = new Text();
 	private static Text word = new Text();
+	private RangeBuilder rb = RangeBuilder.getInstance();
 
 	@Override
 	public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
@@ -42,6 +45,8 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		int count = 0;
 		int count2 = 0;
 		int total = 0;
+		int median = 0;
+		int medianCompare = 0;
 
 		// Used to determine what type of analysis we're doing
 		String[] type = key.toString().split("@");
@@ -186,60 +191,36 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		 *************************************/
 		if (inputType.equals("home-value")) {
 
-			Map<String, Integer> houseValMap = new HashMap<String, Integer>();
-			Map<Integer, String> sortedValMap = new TreeMap<Integer, String>();
-			String valRange;
+			Map<String, Integer> valueMap = new HashMap<String, Integer>();
+			String[] orderedRange = rb.getHouseValueRanges();
+			String medianRange = "";
 
+			// Get the counts for each value range
 			for (Text value : values) {
 				String[] split = value.toString().split("=");
-				valRange = split[0].trim();
-				if (!houseValMap.containsKey(valRange)) {
-					houseValMap.put(valRange, Integer.parseInt(split[1]));
+				String valRange = split[0].trim();
+				count = Integer.parseInt(split[1]);
+				median += count;
+				if (!valueMap.containsKey(valRange)) {
+					valueMap.put(valRange, count);
 				} else {
-					count = houseValMap.get(valRange);
-					count += Integer.parseInt(split[1]);
-					houseValMap.put(valRange, count);
+					count2 = valueMap.get(valRange);
+					count2 += count;
+					valueMap.put(valRange, count2);
 				}
 			}
-
-			// Sort the results by value
-			for (String range : houseValMap.keySet()) {
-				sortedValMap.put(houseValMap.get(range), range);
-			}
-			// Add sorted keys to list to get specific indices
-			List<Integer> sortedIndex = new ArrayList<Integer>();
-			for (Integer index : sortedValMap.keySet()) {
-				sortedIndex.add(index);
-			}
-
-			/*
-			 * List size is 20, so grab the two middle values, 
-			 * median range will be between highest and lowest of these
-			 * two ranges (?)
-			 * 
-			 * Or, just grab index 9, which has the higher count of the two
-			 * middle values and call it the median...
-			 */
+			median = median/2;
 			
-			//			DecimalFormat formatter = new DecimalFormat("#,###");
-			//			String rangeOne = sortedValMap.get(sortedIndex.get(9));
-			//			String rangeTwo = sortedValMap.get(sortedIndex.get(10));
-			//
-			//			List<Integer> rangeList = new ArrayList<Integer>();
-			//			rangeList.add(Integer.parseInt(rangeOne.split(" - ")[0].replaceAll("[^0-9]", "")));
-			//			rangeList.add(Integer.parseInt(rangeOne.split(" - ")[1].replaceAll("[^0-9]", "")));
-			//			rangeList.add(Integer.parseInt(rangeTwo.split(" - ")[0].replaceAll("[^0-9]", "")));
-			//			rangeList.add(Integer.parseInt(rangeTwo.split(" - ")[1].replaceAll("[^0-9]", "")));
-			//			Collections.sort(rangeList);
-			//			
-			//			word.set(type[0] + " median house value");
-			//			if (rangeList.get(3) > 500000)
-			//				result.set("$" + formatter.format(rangeList.get(0)) + " - more than $500,000");
-			//			else
-			//				result.set("$" + formatter.format(rangeList.get(0)) + " - $" + formatter.format(rangeList.get(3)));
-			//			context.write(word, result);
-
-			result.set(sortedValMap.get(sortedIndex.get(10)));
+			// Loop through the ordered set to determine which range contains the median
+			for (int i = 0; i<orderedRange.length; i++) {
+				medianCompare += valueMap.get(orderedRange[i]);
+				if (medianCompare >= median) {
+					medianRange = orderedRange[i];
+					break;
+				}
+			}
+			
+			result.set(medianRange);
 			word.set(type[0] + " median house value");
 			context.write(word, result);
 
@@ -249,40 +230,40 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		 * Q(6) Median rent paid
 		 *************************************/
 		if (inputType.equals("rent-value")) {
+			
+			Map<String, Integer> valueMap = new HashMap<String, Integer>();
+			String[] orderedRange = rb.getHouseRentRanges();
+			String medianRange = "";
 
-			Map<String, Integer> houseValMap = new HashMap<String, Integer>();
-			Map<Integer, String> sortedValMap = new TreeMap<Integer, String>();
-			String valRange;
-
+			// Get the counts for each value range
 			for (Text value : values) {
 				String[] split = value.toString().split("=");
-				valRange = split[0].trim();
-				if (!houseValMap.containsKey(valRange)) {
-					houseValMap.put(valRange, Integer.parseInt(split[1]));
+				String valRange = split[0].trim();
+				count = Integer.parseInt(split[1]);
+				median += count;
+				if (!valueMap.containsKey(valRange)) {
+					valueMap.put(valRange, count);
 				} else {
-					count = houseValMap.get(valRange);
-					count += Integer.parseInt(split[1]);
-					houseValMap.put(valRange, count);
+					count2 = valueMap.get(valRange);
+					count2 += count;
+					valueMap.put(valRange, count2);
 				}
 			}
-
-			// Sort the results by value
-			for (String range : houseValMap.keySet()) {
-				sortedValMap.put(houseValMap.get(range), range);
+			median = median/2;
+			
+			// Loop through the ordered set to determine which range contains the median
+			for (int i = 0; i<orderedRange.length; i++) {
+				medianCompare += valueMap.get(orderedRange[i]);
+				if (medianCompare >= median) {
+					medianRange = orderedRange[i];
+					break;
+				}
 			}
-			List<Integer> sortedIndex = new ArrayList<Integer>();
-			for (Integer index : sortedValMap.keySet()) {
-				sortedIndex.add(index);
-			}
-
-			/*
-			 * List size is 17, so simply grab the middle value
-			 * from the sorted array
-			 */
+			
+			result.set(medianRange);
 			word.set(type[0] + " median rent paid");
-			result.set(sortedValMap.get(sortedIndex.get(8)));
 			context.write(word, result);
-
+			
 		}
 		
 		/*************************************
