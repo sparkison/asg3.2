@@ -45,8 +45,8 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		int count = 0;
 		int count2 = 0;
 		int total = 0;
-		int median = 0;
-		int medianCompare = 0;
+		float percentile = 0;
+		int percentileCompare = 0;
 
 		// Used to determine what type of analysis we're doing
 		String[] type = key.toString().split("@");
@@ -193,14 +193,14 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 
 			Map<String, Integer> valueMap = new HashMap<String, Integer>();
 			String[] orderedRange = rb.getHouseValueRanges();
-			String medianRange = "";
+			String percentileRange = "";
 
 			// Get the counts for each value range
 			for (Text value : values) {
 				String[] split = value.toString().split("=");
 				String valRange = split[0].trim();
 				count = Integer.parseInt(split[1]);
-				median += count;
+				percentile += count;
 				if (!valueMap.containsKey(valRange)) {
 					valueMap.put(valRange, count);
 				} else {
@@ -209,19 +209,19 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 					valueMap.put(valRange, count2);
 				}
 			}
-			median = median/2;
+			percentile = (float) (percentile * 0.5);
 
-			// Loop through the ordered set to determine which range contains the median
+			// Loop through the ordered set to determine which range contains the percentile
 			for (int i = 0; i<orderedRange.length; i++) {
-				medianCompare += valueMap.get(orderedRange[i]);
-				if (medianCompare >= median) {
-					medianRange = orderedRange[i];
+				percentileCompare += valueMap.get(orderedRange[i]);
+				if (percentileCompare >= percentile) {
+					percentileRange = orderedRange[i];
 					break;
 				}
 			}
 
-			result.set(medianRange);
-			word.set(type[0] + " median house value");
+			result.set(percentileRange);
+			word.set(type[0] + " percentile house value");
 			context.write(word, result);
 
 		}
@@ -233,14 +233,14 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 
 			Map<String, Integer> valueMap = new HashMap<String, Integer>();
 			String[] orderedRange = rb.getHouseRentRanges();
-			String medianRange = "";
+			String percentileRange = "";
 
 			// Get the counts for each value range
 			for (Text value : values) {
 				String[] split = value.toString().split("=");
 				String valRange = split[0].trim();
 				count = Integer.parseInt(split[1]);
-				median += count;
+				percentile += count;
 				if (!valueMap.containsKey(valRange)) {
 					valueMap.put(valRange, count);
 				} else {
@@ -249,18 +249,18 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 					valueMap.put(valRange, count2);
 				}
 			}
-			median = median/2;
+			percentile = (float) (percentile * 0.5);
 
-			// Loop through the ordered set to determine which range contains the median
+			// Loop through the ordered set to determine which range contains the percentile
 			for (int i = 0; i<orderedRange.length; i++) {
-				medianCompare += valueMap.get(orderedRange[i]);
-				if (medianCompare >= median) {
-					medianRange = orderedRange[i];
+				percentileCompare += valueMap.get(orderedRange[i]);
+				if (percentileCompare >= percentile) {
+					percentileRange = orderedRange[i];
 					break;
 				}
 			}
 
-			result.set(medianRange);
+			result.set(percentileRange);
 			word.set(type[0] + " median rent paid");
 			context.write(word, result);
 

@@ -27,7 +27,7 @@ public class SecondaryMapper extends Mapper<LongWritable, Text, Text, Text> {
 		if (split[0].substring(3, 7).equals("Aged")) {
 			/*
 			 * Format of input: "AL Aged 85 and greater	13/407675"
-			 * Format of output: "<Aged 85 and greater, AL=13/407675>"
+			 * Format of output: "<Aged 85 and greater, 'AL=13/407675'>"
 			 */
 			word.set("Aged 85 and greater");
 			output.set(split[0].substring(0, 2) + "=" + split[1]);
@@ -35,10 +35,10 @@ public class SecondaryMapper extends Mapper<LongWritable, Text, Text, Text> {
 		} else {
 			/*
 			 * Format of input: "AL 9 rooms	7701"
-			 * Format of output: "<9 rooms, AL=7701>"
+			 * Format of output: "<rooms, '9 rooms@AL=7701'>"
 			 */
-			word.set(split[0].substring(3, split[0].length()));
-			output.set(split[0].substring(0, 2) + "=" + split[1]);
+			word.set("rooms");
+			output.set(split[0].substring(3, split[0].length()) + "@" + split[0].substring(0, 2) + "=" + split[1]);
 			context.write(word, output);
 		}
 		

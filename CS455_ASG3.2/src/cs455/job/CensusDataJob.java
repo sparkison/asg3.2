@@ -52,36 +52,36 @@ public class CensusDataJob {
 		Path outPath = new Path(outputPath);
 		Path outPath2 = new Path(outputPath + "_2");
 
-		// Remove old output paths, if exist
-		if (fs.exists(outPath)) {
-			fs.delete(outPath, true);
-		}
+//		// Remove old output paths, if exist
+//		if (fs.exists(outPath)) {
+//			fs.delete(outPath, true);
+//		}
 		if (fs.exists(outPath2)) {
 			fs.delete(outPath2, true);
 		}
-
-		Job job = Job.getInstance(conf, "Census analysis");
-		job.setJarByClass(CensusDataJob.class);
-
-		// Set Map, Partition, Combiner, and Reducer classes
-		job.setMapperClass(CensusMapper.class);
-		job.setPartitionerClass(CensusPartitioner.class);
-		job.setNumReduceTasks(7);
-		job.setReducerClass(CensusReducer.class);
-
-		// Set the Map output types
-		job.setMapOutputKeyClass(Text.class);
-		job.setMapOutputValueClass(Text.class);
-		// Set the Reduce output types
-		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(Text.class);
-
-		// Set the output paths for the job
-		FileInputFormat.addInputPath(job, inPath);
-		FileOutputFormat.setOutputPath(job, outPath);
-
-		// Block for job to complete...
-		job.waitForCompletion(true);
+//
+//		Job job = Job.getInstance(conf, "Census analysis");
+//		job.setJarByClass(CensusDataJob.class);
+//
+//		// Set Map, Partition, Combiner, and Reducer classes
+//		job.setMapperClass(CensusMapper.class);
+//		job.setPartitionerClass(CensusPartitioner.class);
+//		job.setNumReduceTasks(7);
+//		job.setReducerClass(CensusReducer.class);
+//
+//		// Set the Map output types
+//		job.setMapOutputKeyClass(Text.class);
+//		job.setMapOutputValueClass(Text.class);
+//		// Set the Reduce output types
+//		job.setOutputKeyClass(Text.class);
+//		job.setOutputValueClass(Text.class);
+//
+//		// Set the output paths for the job
+//		FileInputFormat.addInputPath(job, inPath);
+//		FileOutputFormat.setOutputPath(job, outPath);
+//
+//		// Block for job to complete...
+//		job.waitForCompletion(true);
 		
 		/*
 		 * Start MR stage 2 for computing values for Q7 and Q8
