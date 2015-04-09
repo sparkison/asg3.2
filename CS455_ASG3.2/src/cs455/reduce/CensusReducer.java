@@ -43,12 +43,12 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 
 		// Used to determine what type of analysis we're doing
 		String[] type = key.toString().split("@");
-		String versusType = type[1].trim();
+		String inputType = type[1].trim();
 
 		/*************************************
 		 * Q(1) Rented vs. owned
 		 *************************************/
-		if (versusType.equals("rent-own")) {
+		if (inputType.equals("rent-own")) {
 
 			for (Text value : values) {
 				String[] split = value.toString().split("/");
@@ -71,7 +71,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		/*************************************
 		 * Q(2) Male-unarried vs. female-unmarried
 		 *************************************/
-		if (versusType.equals("maleUnmarried-femaleUnmarried")) {
+		if (inputType.equals("maleUnmarried-femaleUnmarried")) {
 
 			for (Text value : values) {
 				String[] split = value.toString().split("/");
@@ -93,7 +93,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		/*************************************
 		 * Q(4) Urban vs. rural
 		 *************************************/
-		if (versusType.equals("rural-urban")) {
+		if (inputType.equals("rural-urban")) {
 
 			for (Text value : values) {
 				String[] split = value.toString().split("/");
@@ -116,7 +116,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		/*************************************
 		 * Q(3a) Male 18 and under/female 18 and under
 		 *************************************/
-		if (versusType.equals("male18-female18")) {
+		if (inputType.equals("male18-female18")) {
 
 			for (Text value : values) {
 				String[] split = value.toString().split("/");
@@ -138,7 +138,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		/*************************************
 		 * Q(3b) Male 19 to 29/female 19 to 29
 		 *************************************/
-		if (versusType.equals("male19to29-female19to29")) {
+		if (inputType.equals("male19to29-female19to29")) {
 
 			for (Text value : values) {
 				String[] split = value.toString().split("/");
@@ -160,7 +160,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		/*************************************
 		 * Q(3c) Male 30 to 39/female 30 to 39
 		 *************************************/
-		if (versusType.equals("male30to39-female30to39")) {
+		if (inputType.equals("male30to39-female30to39")) {
 
 			for (Text value : values) {
 				String[] split = value.toString().split("/");
@@ -182,7 +182,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		/*************************************
 		 * Q(5) Median house value (owner occupied)
 		 *************************************/
-		if (versusType.equals("home-value")) {
+		if (inputType.equals("home-value")) {
 
 			Map<String, Integer> houseValMap = new HashMap<String, Integer>();
 			Map<Integer, String> sortedValMap = new TreeMap<Integer, String>();
@@ -246,7 +246,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		/*************************************
 		 * Q(6) Median rent paid
 		 *************************************/
-		if (versusType.equals("rent-value")) {
+		if (inputType.equals("rent-value")) {
 
 			Map<String, Integer> houseValMap = new HashMap<String, Integer>();
 			Map<Integer, String> sortedValMap = new TreeMap<Integer, String>();
