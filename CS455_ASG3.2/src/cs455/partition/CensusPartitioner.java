@@ -50,13 +50,9 @@ public class CensusPartitioner extends Partitioner<Text, Text> {
 		if (inputType.equals("rent-value")) {
 			return 5;
 		}
-		// Q7
-		if (inputType.equals("number-rooms")) {
+		// Q7 and Q8
+		if (inputType.equals("number-rooms") || inputType.equals("maleOver85-femalOver85")) {
 			return 6;
-		}
-		// Q8
-		if (inputType.equals("maleOver85-femalOver85")) {
-			return 7;
 		}
 
 		return 0;

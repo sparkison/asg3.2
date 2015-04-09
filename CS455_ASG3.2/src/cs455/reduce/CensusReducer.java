@@ -210,7 +210,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 				}
 			}
 			median = median/2;
-			
+
 			// Loop through the ordered set to determine which range contains the median
 			for (int i = 0; i<orderedRange.length; i++) {
 				medianCompare += valueMap.get(orderedRange[i]);
@@ -219,7 +219,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 					break;
 				}
 			}
-			
+
 			result.set(medianRange);
 			word.set(type[0] + " median house value");
 			context.write(word, result);
@@ -230,7 +230,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		 * Q(6) Median rent paid
 		 *************************************/
 		if (inputType.equals("rent-value")) {
-			
+
 			Map<String, Integer> valueMap = new HashMap<String, Integer>();
 			String[] orderedRange = rb.getHouseRentRanges();
 			String medianRange = "";
@@ -250,7 +250,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 				}
 			}
 			median = median/2;
-			
+
 			// Loop through the ordered set to determine which range contains the median
 			for (int i = 0; i<orderedRange.length; i++) {
 				medianCompare += valueMap.get(orderedRange[i]);
@@ -259,31 +259,52 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 					break;
 				}
 			}
-			
+
 			result.set(medianRange);
 			word.set(type[0] + " median rent paid");
 			context.write(word, result);
-			
+
 		}
-		
+
 		/*************************************
 		 * Q(7) 95'th percentile number of rooms
 		 *************************************/
 		if (inputType.equals("number-rooms")) {
-			//TODO
+
+			Map<String, Integer> valueMap = new HashMap<String, Integer>();
+			
+			for (Text value : values) {
+				String[] split = value.toString().split("=");
+				String numRooms = split[0].trim();
+				count = Integer.parseInt(split[1]);
+				if (!valueMap.containsKey(numRooms)) {
+					valueMap.put(numRooms, count);
+				} else {
+					count2 = valueMap.get(numRooms);
+					count2 += count;
+					valueMap.put(numRooms, count2);
+				}
+			}
+			
+			for (String val : valueMap.keySet()) {
+				result.set("" + valueMap.get(val));
+				word.set(type[0] + " " + val);
+				context.write(word, result);
+			}
+
 		}
-		
+
 		/*************************************
 		 * Q(8) Population over 85
 		 *************************************/
 		if (inputType.equals("maleOver85-femalOver85")) {
-			
+
 			for (Text value : values) {
 				String[] split = value.toString().split("/");
 				count += Integer.parseInt(split[0]);
 				total += Integer.parseInt(split[1]);
 			}
-			
+
 			word.set(type[0] + " Aged 85 and greater");
 			result.set(count + "/" + total + " = " + getPercent(count, total) + "%");
 			context.write(word, result);
