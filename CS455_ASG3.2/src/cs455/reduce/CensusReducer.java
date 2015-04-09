@@ -26,10 +26,10 @@ import org.apache.hadoop.mapreduce.Reducer;
  * <state@male18-female18, "male-under18/female-under18/total-population"> 						– Used for Q3(a) analysis
  * <state@male19to29-female19to29, "male-19to29/female-19to29/total-population"> 				– Used for Q3(b) analysis
  * <state@male30to39-female30to39, "male-30to39/female-30to39/total-population"> 				– Used for Q3(c) analysis
- * <state@home-value, "value-range/count-of-range"> 											– Used for Q5 analysis
- * <state@rent-value, "value-range/count-of-range"> 											– Used for Q6 analysis
- * <state@number-rooms, "number-of-rooms/count"> 												– Used for Q7 analysis
- * <state@maleOver85-femalOver85, "male-85-and-older/female-85-and-older"> 						– Used for Q8 analysis
+ * <state@home-value, "value-range=count-of-range"> 											– Used for Q5 analysis
+ * <state@rent-value, "value-range=count-of-range"> 											– Used for Q6 analysis
+ * <state@number-rooms, "number-of-rooms=count"> 												– Used for Q7 analysis
+ * <state@maleOver85-femalOver85, "male-85-and-older/female-85-and-older/total-population">		– Used for Q8 analysis
  */
 public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 
@@ -239,7 +239,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			//				result.set("$" + formatter.format(rangeList.get(0)) + " - $" + formatter.format(rangeList.get(3)));
 			//			context.write(word, result);
 
-			result.set(sortedValMap.get(sortedIndex.get(9)));
+			result.set(sortedValMap.get(sortedIndex.get(10)));
 			word.set(type[0] + " median house value");
 			context.write(word, result);
 
@@ -296,7 +296,17 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		 * Q(8) Population over 85
 		 *************************************/
 		if (inputType.equals("maleOver85-femalOver85")) {
-			//TODO
+			
+			for (Text value : values) {
+				String[] split = value.toString().split("/");
+				count += Integer.parseInt(split[0]);
+				total += Integer.parseInt(split[1]);
+			}
+			
+			word.set(type[0] + " Aged 85 and greater");
+			result.set(count + "/" + total + " = " + getPercent(count, total) + "%");
+			context.write(word, result);
+
 		}
 
 	}

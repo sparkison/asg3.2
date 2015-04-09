@@ -39,8 +39,7 @@ public class CensusDataJob {
 	}
 	
 	/*
-	 * This is the job for the Census versus analysis
-	 * It is used for the Questions related to comparisons (this vs. that)
+	 * This is the job for the Census analysis
 	 */
 	public int start() throws IllegalArgumentException, IOException, ClassNotFoundException, InterruptedException{
 

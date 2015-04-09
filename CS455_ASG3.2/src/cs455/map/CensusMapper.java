@@ -21,10 +21,10 @@ import org.apache.hadoop.mapreduce.Mapper;
  * <state@male18-female18, "male-under18/female-under18/total-population"> 						– Used for Q3(a) analysis
  * <state@male19to29-female19to29, "male-19to29/female-19to29/total-population"> 				– Used for Q3(b) analysis
  * <state@male30to39-female30to39, "male-30to39/female-30to39/total-population"> 				– Used for Q3(c) analysis
- * <state@home-value, "value-range/count-of-range"> 											– Used for Q5 analysis
- * <state@rent-value, "value-range/count-of-range"> 											– Used for Q6 analysis
- * <state@number-rooms, "number-of-rooms/count"> 												– Used for Q7 analysis
- * <state@maleOver85-femalOver85, "male-85-and-older/female-85-and-older"> 						– Used for Q8 analysis
+ * <state@home-value, "value-range=count-of-range"> 											– Used for Q5 analysis
+ * <state@rent-value, "value-range=count-of-range"> 											– Used for Q6 analysis
+ * <state@number-rooms, "number-of-rooms=count"> 												– Used for Q7 analysis
+ * <state@maleOver85-femalOver85, "male-85-and-older/female-85-and-older/total-population">		– Used for Q8 analysis
  */
 public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 
@@ -49,7 +49,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 
 			/*
 			 * ***************************************************
-			 * Primary file information
+			 * Primary record information
 			 * ***************************************************
 			 */
 
@@ -86,7 +86,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 
 			/*
 			 * ***************************************************
-			 * END Primary file information
+			 * END Primary record information
 			 * ***************************************************
 			 */			
 
@@ -215,21 +215,22 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				 * Males aged 85 and older
 				 * Start index = 4134
 				 */
-				start = 4134;
-				
+				maleOver85 = Integer.parseInt(line.substring(4134, 4143));
 				
 				/*
 				 * Females aged 85 and older
 				 * Start index = 4413
 				 */
-				start = 4413;
+				femalOver85 = Integer.parseInt(line.substring(4413, 4422));
 				
 				word.set(state + "@maleOver85-femalOver85");
-				output.set(male30to39 + "/" + female30to39 + "/" + totalPop);
+				output.set((maleOver85 + femalOver85) + "/" + totalPop);
 				context.write(word, output);
 
 			}
+			
 			if (logicalRecordPart == 2) {
+				
 				/*************************************
 				 * Q(1) Rented vs. owned
 				 *************************************/
@@ -274,7 +275,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				/*************************************
 				 * Q(6) Median rent paid
 				 *************************************/
-				houseVals = getHouseRentValueRanges();
+				houseVals = getHouseRentRanges();
 				word.set(state + "@rent-value");
 				/*
 				 * Start index = 3450, end = 3603
@@ -292,7 +293,22 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				/*************************************
 				 * Q(7) Avg number of rooms
 				 *************************************/
+				String[] numRooms = getRoomValueRange();
 				word.set(state + "@number-rooms");
+				int roomCount;
+				/*
+				 * Start index = 2388, end = 2469
+				 * (2469-2388)/9 = 9
+				 */
+				start = 2388;
+				for (int i = 0; i<9; i++) {
+					end = start + 9;
+					roomCount = Integer.parseInt(line.substring(start, end));
+					output.set(numRooms[i] + "=" + roomCount);
+					context.write(word, output);
+					start += 9;
+				}
+				
 			}
 
 		}// END While loop
@@ -325,7 +341,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 		return houseVals;
 	}
 
-	public String[] getHouseRentValueRanges(){
+	public String[] getHouseRentRanges(){
 		String[] rentVals = new String[17];
 		rentVals[0] = "Less than $100";
 		rentVals[1] = "$100 - $149";
@@ -345,6 +361,20 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 		rentVals[15] = "$1000 or more";
 		rentVals[16] = "No cash rent";
 		return rentVals;
+	}
+	
+	public String[] getRoomValueRange(){
+		String[] numRooms = new String[9];
+		numRooms[0] = "1 room";
+		numRooms[1] = "2 rooms";
+		numRooms[2] = "3 rooms";
+		numRooms[3] = "4 rooms";
+		numRooms[4] = "5 rooms";
+		numRooms[5] = "6 rooms";
+		numRooms[6] = "7 rooms";
+		numRooms[7] = "8 rooms";
+		numRooms[8] = "9 rooms";
+		return numRooms;
 	}
 
 }
