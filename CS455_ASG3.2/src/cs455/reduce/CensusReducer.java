@@ -45,9 +45,9 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		String[] type = key.toString().split("@");
 		String versusType = type[1].trim();
 
-		/*
-		 * If here, doing rent vs. owned comparison
-		 */
+		/*************************************
+		 * Q(1) Rented vs. owned
+		 *************************************/
 		if (versusType.equals("rent-own")) {
 
 			for (Text value : values) {
@@ -67,9 +67,10 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			context.write(word, result);
 
 		}
-		/*
-		 * If here, doing male-unmarried vs. female-unmarried comparison
-		 */
+
+		/*************************************
+		 * Q(2) Male-unarried vs. female-unmarried
+		 *************************************/
 		if (versusType.equals("maleUnmarried-femaleUnmarried")) {
 
 			for (Text value : values) {
@@ -88,9 +89,10 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			context.write(word, result);
 
 		}
-		/*
-		 * If here, doing rural vs. urban comparison
-		 */
+
+		/*************************************
+		 * Q(4) Urban vs. rural
+		 *************************************/
 		if (versusType.equals("rural-urban")) {
 
 			for (Text value : values) {
@@ -110,9 +112,10 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			context.write(word, result);
 
 		}
-		/*
-		 * If here, doing male/female percent under 18
-		 */
+
+		/*************************************
+		 * Q(3a) Male 18 and under/female 18 and under
+		 *************************************/
 		if (versusType.equals("male18-female18")) {
 
 			for (Text value : values) {
@@ -131,9 +134,10 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			context.write(word, result);
 
 		}
-		/*
-		 * If here, doing male/female percent aged 19 to 29
-		 */
+
+		/*************************************
+		 * Q(3b) Male 19 to 29/female 19 to 29
+		 *************************************/
 		if (versusType.equals("male19to29-female19to29")) {
 
 			for (Text value : values) {
@@ -152,9 +156,10 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			context.write(word, result);
 
 		}
-		/*
-		 * If here, doing male/female percent aged 30 to 39
-		 */
+
+		/*************************************
+		 * Q(3c) Male 30 to 39/female 30 to 39
+		 *************************************/
 		if (versusType.equals("male30to39-female30to39")) {
 
 			for (Text value : values) {
@@ -173,9 +178,10 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			context.write(word, result);
 
 		}
-		/*
-		 * If here, finding median home value
-		 */
+
+		/*************************************
+		 * Q(5) Median house value (owner occupied)
+		 *************************************/
 		if (versusType.equals("home-value")) {
 
 			Map<String, Integer> houseValMap = new HashMap<String, Integer>();
@@ -209,10 +215,10 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			 * median range will be between highest and lowest of these
 			 * two ranges (?)
 			 */
-			DecimalFormat formatter = new DecimalFormat("#,###");
-			String rangeOne = sortedValMap.get(sortedIndex.get(9));
-			String rangeTwo = sortedValMap.get(sortedIndex.get(10));
-
+			//			DecimalFormat formatter = new DecimalFormat("#,###");
+			//			String rangeOne = sortedValMap.get(sortedIndex.get(9));
+			//			String rangeTwo = sortedValMap.get(sortedIndex.get(10));
+			//
 			//			List<Integer> rangeList = new ArrayList<Integer>();
 			//			rangeList.add(Integer.parseInt(rangeOne.split(" - ")[0].replaceAll("[^0-9]", "")));
 			//			rangeList.add(Integer.parseInt(rangeOne.split(" - ")[1].replaceAll("[^0-9]", "")));
@@ -227,14 +233,15 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			//				result.set("$" + formatter.format(rangeList.get(0)) + " - $" + formatter.format(rangeList.get(3)));
 			//			context.write(word, result);
 
-			result.set("Between " + rangeOne + " and " + rangeTwo);
+			result.set(sortedValMap.get(sortedIndex.get(9)));
 			word.set(type[0] + " median house value");
 			context.write(word, result);
 
 		}
-		/*
-		 * If here, finding median rental value
-		 */
+
+		/*************************************
+		 * Q(6) Median rent paid
+		 *************************************/
 		if (versusType.equals("rent-value")) {
 
 			Map<String, Integer> houseValMap = new HashMap<String, Integer>();
