@@ -291,7 +291,6 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 		return houseVals;
 	}
 
-	// Helper methods
 	public String[] getHouseRentValueRanges(){
 		String[] rentVals = new String[17];
 		rentVals[0] = "Less than $100";
