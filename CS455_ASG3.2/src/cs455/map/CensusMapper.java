@@ -287,7 +287,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 		houseVals[16] = "$250,000 - $299,999";
 		houseVals[17] = "$300,000 - $399,999";
 		houseVals[18] = "$400,000 - $499,999";
-		houseVals[19] = "$500,000 - more";
+		houseVals[19] = "$500,000 or more";
 		return houseVals;
 	}
 
