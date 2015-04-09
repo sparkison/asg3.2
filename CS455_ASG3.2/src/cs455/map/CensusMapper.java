@@ -304,7 +304,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 		rentVals[12] = "$650 - $699";
 		rentVals[13] = "$700 - $749";
 		rentVals[14] = "$750 - $999";
-		rentVals[15] = "$1000 or more"; // The "$9999" is simply a placeholder for checking max
+		rentVals[15] = "$1000 or more";
 		rentVals[16] = "No cash rent";
 		return rentVals;
 	}
