@@ -2,6 +2,7 @@
 Census data collection using MapReduce, Shaun Parkison (shaunpa)
 ----------------------------------------------------------------------
 
+
 Run using "$HADOOP_HOME/bin/hadoop jar 'jar_location/census-data.jar' util.CensusDriver [census_input_path] [results_output_path]"
 
 [census_input_path] is the path that contains the census data
@@ -19,3 +20,21 @@ Results for Q7 and Q8 will be in: 		[results_output_path]_2/part-r-00000
 
 Q7 and Q8 calculations are done based on output from the first MR task (located at [results_output_path]/part-r-00006).
 
+
+----------------------------------------------------------------------
+Class structure:
+----------------------------------------------------------------------
+cs455
+  |--job
+  |	  |--CensusDataJob (the job configuration class for the MR job)
+  |--map
+  |   |--CensusMapper (primary map class, used for Q1 through Q6)
+  |	  |--SecondaryMapper (secondary map class, uses some outputs from CensusMapper to calculate answers to Q7 and Q8)
+  |--partition
+  |	  |--CensusPartitioner (primary paritioner, partitions the various questions to separate mappers)
+  |--reduce
+  |  |--CensusReducer (primary reducer class, used for Q1 through Q6)
+  |  |--SecondaryReducer (secondary reducer class, used to calculate final answers to Q7 and Q8)
+  |--util
+  |	 |--CensusDriver (the primary driver class. This is used to execute the MR tasks needed in succession to produce the final outputs)
+  |	 |--RangeBuilder (a factory class, used to build String[] variables for the various ranges used)
