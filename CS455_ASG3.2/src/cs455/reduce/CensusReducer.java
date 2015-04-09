@@ -27,6 +27,7 @@ import org.apache.hadoop.mapreduce.Reducer;
  * <state@male19to29-female19to29, "male-19to29/female-19to29/total-population"> 				– Used for Q3(b) analysis
  * <state@male30to39-female30to39, "male-30to39/female-30to39/total-population"> 				– Used for Q3(c) analysis
  * <state@home-value, "value-range/count-of-range"> 											– Used for Q5 analysis
+ * <state@rent-value, "value-range/count-of-range"> 											– Used for Q6 analysis
  */
 public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 
@@ -223,6 +224,44 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 				result.set("$" + formatter.format(rangeList.get(0)) + " - more");
 			else
 				result.set("$" + formatter.format(rangeList.get(0)) + " - $" + formatter.format(rangeList.get(3)));
+			context.write(word, result);
+			
+		}
+		/*
+		 * If here, finding median rental value
+		 */
+		if (versusType.equals("rent-value")) {
+			
+			Map<String, Integer> houseValMap = new HashMap<String, Integer>();
+			Map<Integer, String> sortedValMap = new TreeMap<Integer, String>();
+			String valRange;
+			
+			for (Text value : values) {
+				String[] split = value.toString().split("=");
+				valRange = split[0].trim();
+				if (!houseValMap.containsKey(valRange)) {
+					houseValMap.put(valRange, Integer.parseInt(split[1]));
+				} else {
+					count = houseValMap.get(valRange);
+					count += Integer.parseInt(split[1]);
+					houseValMap.put(valRange, count);
+				}
+			}
+			
+			// Sort the results by value
+			for (String range : houseValMap.keySet()) {
+				sortedValMap.put(houseValMap.get(range), range);
+			}
+			List<Integer> sortedIndex = new ArrayList<Integer>();
+			for (Integer index : sortedValMap.keySet()) {
+				sortedIndex.add(index);
+			}
+			
+			/*
+			 * List size is 17, so grab the middle value
+			 */
+			word.set(type[0] + " median rent paid");
+			result.set(sortedValMap.get(sortedIndex.get(8)));
 			context.write(word, result);
 			
 		}

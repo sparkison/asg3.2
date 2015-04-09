@@ -46,6 +46,10 @@ public class CensusPartitioner extends Partitioner<Text, Text> {
 		if (versusType.equals("home-value")) {
 			return 4;
 		}
+		// Q6
+		if (versusType.equals("rent-value")) {
+			return 5;
+		}
 
 		return 0;
 

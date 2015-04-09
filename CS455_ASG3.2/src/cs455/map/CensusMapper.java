@@ -22,6 +22,7 @@ import org.apache.hadoop.mapreduce.Mapper;
  * <state@male19to29-female19to29, "male-19to29/female-19to29/total-population"> 				– Used for Q3(b) analysis
  * <state@male30to39-female30to39, "male-30to39/female-30to39/total-population"> 				– Used for Q3(c) analysis
  * <state@home-value, "value-range/count-of-range"> 											– Used for Q5 analysis
+ * <state@rent-value, "value-range/count-of-range"> 											– Used for Q6 analysis
  */
 public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 
@@ -234,6 +235,24 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 					context.write(word, output);
 					start += 9;
 				}
+				
+				/*************************************
+				 * Q(6) Median house value (owner occupied)
+				 *************************************/
+				houseVals = getHouseRentValueRanges();
+				word.set(state + "@rent-value");
+				/*
+				 * Start index = 3450, end = 3603
+				 * (3603-3450)/9 = 17
+				 */
+				start = 3450;
+				for (int i = 0; i<17; i++) {
+					end = start + 9;
+					homeValue = Integer.parseInt(line.substring(start, end));
+					output.set(houseVals[i] + "=" + homeValue);
+					context.write(word, output);
+					start += 9;
+				}
 
 			}
 
@@ -270,7 +289,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 	// Helper methods
 	public String[] getHouseRentValueRanges(){
 		String[] rentVals = new String[17];
-		rentVals[0] = "$0 - $100";
+		rentVals[0] = "Less than $100";
 		rentVals[1] = "$100 - $149";
 		rentVals[2] = "$150 - $199";
 		rentVals[3] = "$200 - $249";
@@ -285,8 +304,8 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 		rentVals[12] = "$650 - $699";
 		rentVals[13] = "$700 - $749";
 		rentVals[14] = "$750 - $999";
-		rentVals[15] = "$1000 - $9999"; // The "$9999" is simply a placeholder for checking max
-		rentVals[16] = "no cash - no cash";
+		rentVals[15] = "$1000 or more"; // The "$9999" is simply a placeholder for checking max
+		rentVals[16] = "No cash rent";
 		return rentVals;
 	}
 
