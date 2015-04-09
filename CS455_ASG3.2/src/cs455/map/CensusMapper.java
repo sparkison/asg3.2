@@ -97,7 +97,6 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				/*************************************
 				 * Q(2) Male-unarried vs. female-unmarried
 				 *************************************/
-
 				totalPop = Integer.parseInt(line.substring(300, 309));
 				malePop = Integer.parseInt(line.substring(363, 372));
 				femalePop = Integer.parseInt(line.substring(372, 381));
@@ -112,10 +111,9 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				/*************************************
 				 * Q(3a) Male 18 and under/female 18 and under
 				 *************************************/
-
 				int maleUnder18 = 0;
 				int femaleUnder18 = 0;
-				int start, end;
+				int start;
 				/*
 				 * Males aged 18 and under
 				 * Start index = 3864, end = 3981
@@ -123,8 +121,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				 */
 				start = 3864;
 				for (int i = 0; i<13; i++) {
-					end = start + 9;
-					maleUnder18 += Integer.parseInt(line.substring(start, end));
+					maleUnder18 += Integer.parseInt(line.substring(start, start + 9));
 					start += 9;
 				}
 				/*
@@ -134,8 +131,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				 */
 				start = 4143;
 				for (int i = 0; i<13; i++) {
-					end = start + 9;
-					femaleUnder18 += Integer.parseInt(line.substring(start, end));
+					femaleUnder18 += Integer.parseInt(line.substring(start, start + 9));
 					start += 9;
 				}
 				word.set(state + "@male18-female18");
@@ -145,7 +141,6 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				/*************************************
 				 * Q(3b) Male 19 to 29/female 19 to 29
 				 *************************************/
-
 				int male19to29 = 0;
 				int female19to29 = 0;
 				/*
@@ -155,8 +150,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				 */
 				start = 3981;
 				for (int i = 0; i<5; i++) {
-					end = start + 9;
-					male19to29 += Integer.parseInt(line.substring(start, end));
+					male19to29 += Integer.parseInt(line.substring(start, start + 9));
 					start += 9;
 				}
 				/*
@@ -166,8 +160,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				 */
 				start = 4260;
 				for (int i = 0; i<5; i++) {
-					end = start + 9;
-					female19to29 += Integer.parseInt(line.substring(start, end));
+					female19to29 += Integer.parseInt(line.substring(start, start + 9));
 					start += 9;
 				}
 				word.set(state + "@male19to29-female19to29");
@@ -178,7 +171,6 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				/*************************************
 				 * Q(3c) Male 30 to 39/female 30 to 39
 				 *************************************/
-
 				int male30to39 = 0;
 				int female30to39 = 0;
 				/*
@@ -188,8 +180,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				 */
 				start = 4026;
 				for (int i = 0; i<2; i++) {
-					end = start + 9;
-					male30to39 += Integer.parseInt(line.substring(start, end));
+					male30to39 += Integer.parseInt(line.substring(start, start + 9));
 					start += 9;
 				}
 				/*
@@ -199,8 +190,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				 */
 				start = 4305;
 				for (int i = 0; i<2; i++) {
-					end = start + 9;
-					female30to39 += Integer.parseInt(line.substring(start, end));
+					female30to39 += Integer.parseInt(line.substring(start, start + 9));
 					start += 9;
 				}
 				word.set(state + "@male30to39-female30to39");
@@ -211,20 +201,17 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				 * Q(8) Population over 85
 				 *************************************/
 				int maleOver85 = 0;
-				int femalOver85 = 0;
-				
+				int femalOver85 = 0;				
 				/*
 				 * Males aged 85 and older
 				 * Start index = 4134
 				 */
 				maleOver85 = Integer.parseInt(line.substring(4134, 4143));
-				
 				/*
 				 * Females aged 85 and older
 				 * Start index = 4413
 				 */
 				femalOver85 = Integer.parseInt(line.substring(4413, 4422));
-				
 				word.set(state + "@maleOver85-femalOver85");
 				output.set((maleOver85 + femalOver85) + "/" + totalPop);
 				context.write(word, output);
@@ -259,7 +246,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				/*************************************
 				 * Q(5) Median house value (owner occupied)
 				 *************************************/
-				int start, end;
+				int start;
 				int homeValue;
 				String[] houseVals = rb.getHouseValueRanges();
 				word.set(state + "@home-value");
@@ -269,8 +256,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				 */
 				start = 2928;
 				for (int i = 0; i<20; i++) {
-					end = start + 9;
-					homeValue = Integer.parseInt(line.substring(start, end));
+					homeValue = Integer.parseInt(line.substring(start, start + 9));
 					output.set(houseVals[i] + "=" + homeValue);
 					context.write(word, output);
 					start += 9;
@@ -287,8 +273,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				 */
 				start = 3450;
 				for (int i = 0; i<17; i++) {
-					end = start + 9;
-					homeValue = Integer.parseInt(line.substring(start, end));
+					homeValue = Integer.parseInt(line.substring(start, start + 9));
 					output.set(houseVals[i] + "=" + homeValue);
 					context.write(word, output);
 					start += 9;
@@ -306,8 +291,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				 */
 				start = 2388;
 				for (int i = 0; i<9; i++) {
-					end = start + 9;
-					roomCount = Integer.parseInt(line.substring(start, end));
+					roomCount = Integer.parseInt(line.substring(start, start + 9));
 					output.set(numRooms[i] + "=" + roomCount);
 					context.write(word, output);
 					start += 9;
