@@ -221,7 +221,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			}
 
 			result.set(percentileRange);
-			word.set(type[0] + " percentile house value");
+			word.set(type[0] + " median house value");
 			context.write(word, result);
 
 		}
