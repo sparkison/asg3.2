@@ -214,7 +214,11 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 			 * List size is 20, so grab the two middle values, 
 			 * median range will be between highest and lowest of these
 			 * two ranges (?)
+			 * 
+			 * Or, just grab index 9, which has the higher count of the two
+			 * middle values and call it the median...
 			 */
+			
 			//			DecimalFormat formatter = new DecimalFormat("#,###");
 			//			String rangeOne = sortedValMap.get(sortedIndex.get(9));
 			//			String rangeTwo = sortedValMap.get(sortedIndex.get(10));
@@ -281,6 +285,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 
 	}
 
+	// Helper method to calculate percentage of two values
 	private float getPercent(int num, int denom){
 		float percent = num * 100f / denom;
 		return percent;
