@@ -59,7 +59,12 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 			if (summaryLevel != MAX_LEVEL)
 				continue;
 
-			// Get record information
+			/*
+			 * Get record information
+			 * In case of malformed line, continue to next
+			 * line. Prevents malformed file from breaking
+			 * calculation job.
+			 */
 			logicalRecordPart = 0;
 			try {
 				logicalRecord = Integer.parseInt(line.substring(18, 24));
