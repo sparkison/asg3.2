@@ -200,7 +200,10 @@ public class CensusDataJob {
 			try{
 				// Save results
 			    PrintWriter pw = new PrintWriter("Census_Results");
-				// Process Q1
+			    
+				/*
+				 * BEGIN Q1 formatting
+				 */
 				List<String> q1List = new ArrayList<String>();
 				Path pt = new Path(outPath.toString() + "/part-r-00000");
 				BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(pt)));
@@ -227,7 +230,33 @@ public class CensusDataJob {
 					// System.out.println(result);
 				}
 				
-				// Process Q2
+				/*
+				 * BEGIN Q2 formatting
+				 */
+				List<String> q2List = new ArrayList<String>();
+				pt = new Path(outPath.toString() + "/part-r-00001");
+				br = new BufferedReader(new InputStreamReader(fs.open(pt)));
+				line = br.readLine();
+				count = 1;
+				while (line != null){
+					q2List.add(line);
+					line = br.readLine();
+				}
+				br.close();
+				
+				pw.println("****************************************************************************");
+				pw.println("	Results for Q2");
+				pw.println("****************************************************************************\n");
+				
+				for (int i = 0; i<q2List.size()-1; i++) {
+					
+					String state = STATE_MAP.get(q1List.get(i).substring(0, 2));
+					String[] split = q1List.get(i).split("\t");
+					String[] split2 = q1List.get(i+1).split("\t");
+					String result = "For the state of " + state + ", " + split[1].split("=")[1].trim() + " of males never married and " + split2[1].split("=")[1].trim() + " of females never married.";
+					pw.println(result);
+					// System.out.println(result);
+				}
 				
 				
 				// Close print writer
