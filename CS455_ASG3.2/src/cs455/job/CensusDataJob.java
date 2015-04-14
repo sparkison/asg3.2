@@ -229,6 +229,7 @@ public class CensusDataJob {
 					pw.println(result);
 					// System.out.println(result);
 				}
+				System.out.println();
 				
 				/*
 				 * BEGIN Q2 formatting
@@ -257,7 +258,7 @@ public class CensusDataJob {
 					pw.println(result);
 					// System.out.println(result);
 				}
-				
+				System.out.println();
 				
 				// Close print writer
 				pw.flush();    
