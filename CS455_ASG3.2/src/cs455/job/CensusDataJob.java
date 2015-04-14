@@ -192,9 +192,9 @@ public class CensusDataJob {
 		// Process results into more readable form
 		if (status == 0) {
 			
-			System.out.println("***********************************************************");
+			System.out.println("****************************************************************************");
 			System.out.println("	MapReduce tasks completed successfully!");
-			System.out.println("***********************************************************\n");
+			System.out.println("****************************************************************************\n");
 			
 			try{
 				
