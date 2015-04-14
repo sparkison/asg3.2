@@ -19,7 +19,7 @@ import cs455.util.RangeBuilder;
  * Output formats: 
  * <state@rent-own, "count-rented/count-owned"> 												– Used for Q1 analysis
  * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-population"> 	– Used for Q2 analysis
- * <state@rural-urban, "count-rural/count-urban"> 												– Used for Q4 analysis
+ * <state@rural-urban, "count-rural/count-urban/count-undefined">								– Used for Q4 analysis
  * <state@male18-female18, "male-under18/female-under18/total-population"> 						– Used for Q3(a) analysis
  * <state@male19to29-female19to29, "male-19to29/female-19to29/total-population"> 				– Used for Q3(b) analysis
  * <state@male30to39-female30to39, "male-30to39/female-30to39/total-population"> 				– Used for Q3(c) analysis
@@ -42,7 +42,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 		int totalPop, malePop, femalePop;
 		int owned, rented;
 		int maleUnmarried, femaleUnmarried;
-		int urbanInside, urbanOutside, rural;
+		int urbanInside, urbanOutside, rural, notDefined;
 
 		// Split on newline
 		StringTokenizer lineItr = new StringTokenizer(value.toString(), "\n");
@@ -238,9 +238,10 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				urbanInside = Integer.parseInt(line.substring(1857, 1866));
 				urbanOutside = Integer.parseInt(line.substring(1866, 1875));
 				rural = Integer.parseInt(line.substring(1875, 1884));
+				notDefined = Integer.parseInt(line.substring(1884, 1893));
 
 				word.set(state + "@rural-urban");
-				output.set(rural + "/" + (urbanInside + urbanOutside));
+				output.set(rural + "/" + (urbanInside + urbanOutside) + "/" + notDefined);
 				context.write(word, output);
 
 				/*************************************

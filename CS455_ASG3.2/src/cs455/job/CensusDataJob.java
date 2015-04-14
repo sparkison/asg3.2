@@ -6,11 +6,18 @@
 
 package cs455.job;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -24,22 +31,94 @@ import cs455.reduce.SecondaryReducer;
 
 public class CensusDataJob {
 
+	public static final Map<String, String> STATE_MAP;
+	static {
+	    STATE_MAP = new HashMap<String, String>();
+	    STATE_MAP.put("AL", "Alabama");
+	    STATE_MAP.put("AK", "Alaska");
+	    STATE_MAP.put("AB", "Alberta");
+	    STATE_MAP.put("AZ", "Arizona");
+	    STATE_MAP.put("AR", "Arkansas");
+	    STATE_MAP.put("BC", "British Columbia");
+	    STATE_MAP.put("CA", "California");
+	    STATE_MAP.put("CO", "Colorado");
+	    STATE_MAP.put("CT", "Connecticut");
+	    STATE_MAP.put("DE", "Delaware");
+	    STATE_MAP.put("DC", "District Of Columbia");
+	    STATE_MAP.put("FL", "Florida");
+	    STATE_MAP.put("GA", "Georgia");
+	    STATE_MAP.put("GU", "Guam");
+	    STATE_MAP.put("HI", "Hawaii");
+	    STATE_MAP.put("ID", "Idaho");
+	    STATE_MAP.put("IL", "Illinois");
+	    STATE_MAP.put("IN", "Indiana");
+	    STATE_MAP.put("IA", "Iowa");
+	    STATE_MAP.put("KS", "Kansas");
+	    STATE_MAP.put("KY", "Kentucky");
+	    STATE_MAP.put("LA", "Louisiana");
+	    STATE_MAP.put("ME", "Maine");
+	    STATE_MAP.put("MB", "Manitoba");
+	    STATE_MAP.put("MD", "Maryland");
+	    STATE_MAP.put("MA", "Massachusetts");
+	    STATE_MAP.put("MI", "Michigan");
+	    STATE_MAP.put("MN", "Minnesota");
+	    STATE_MAP.put("MS", "Mississippi");
+	    STATE_MAP.put("MO", "Missouri");
+	    STATE_MAP.put("MT", "Montana");
+	    STATE_MAP.put("NE", "Nebraska");
+	    STATE_MAP.put("NV", "Nevada");
+	    STATE_MAP.put("NB", "New Brunswick");
+	    STATE_MAP.put("NH", "New Hampshire");
+	    STATE_MAP.put("NJ", "New Jersey");
+	    STATE_MAP.put("NM", "New Mexico");
+	    STATE_MAP.put("NY", "New York");
+	    STATE_MAP.put("NF", "Newfoundland");
+	    STATE_MAP.put("NC", "North Carolina");
+	    STATE_MAP.put("ND", "North Dakota");
+	    STATE_MAP.put("NT", "Northwest Territories");
+	    STATE_MAP.put("NS", "Nova Scotia");
+	    STATE_MAP.put("NU", "Nunavut");
+	    STATE_MAP.put("OH", "Ohio");
+	    STATE_MAP.put("OK", "Oklahoma");
+	    STATE_MAP.put("ON", "Ontario");
+	    STATE_MAP.put("OR", "Oregon");
+	    STATE_MAP.put("PA", "Pennsylvania");
+	    STATE_MAP.put("PE", "Prince Edward Island");
+	    STATE_MAP.put("PR", "Puerto Rico");
+	    STATE_MAP.put("QC", "Quebec");
+	    STATE_MAP.put("RI", "Rhode Island");
+	    STATE_MAP.put("SK", "Saskatchewan");
+	    STATE_MAP.put("SC", "South Carolina");
+	    STATE_MAP.put("SD", "South Dakota");
+	    STATE_MAP.put("TN", "Tennessee");
+	    STATE_MAP.put("TX", "Texas");
+	    STATE_MAP.put("UT", "Utah");
+	    STATE_MAP.put("VT", "Vermont");
+	    STATE_MAP.put("VI", "Virgin Islands");
+	    STATE_MAP.put("VA", "Virginia");
+	    STATE_MAP.put("WA", "Washington");
+	    STATE_MAP.put("WV", "West Virginia");
+	    STATE_MAP.put("WI", "Wisconsin");
+	    STATE_MAP.put("WY", "Wyoming");
+	    STATE_MAP.put("YT", "Yukon Territory");
+	}
+	
 	private String inputPath;
 	private String outputPath;
-	
+
 	public CensusDataJob(String inputPath, String outputPath) {
 		this.inputPath = inputPath;
 		this.outputPath = outputPath;
 	}
-	
+
 	public String getInputPath(){
 		return new String(inputPath);
 	}
-	
+
 	public String getOutputPath(){
 		return new String(outputPath);
 	}
-	
+
 	/*
 	 * This is the job for the Census analysis
 	 */
@@ -82,13 +161,13 @@ public class CensusDataJob {
 
 		// Block for job to complete...
 		job.waitForCompletion(true);
-		
+
 		/*
 		 * Start MR stage 2 for computing values for Q7 and Q8
 		 */
-		
+
 		Configuration conf2 = new Configuration();
-		
+
 		Job job2 = Job.getInstance(conf2, "Census analysis stage 2");
 		job2.setJarByClass(CensusDataJob.class);
 
@@ -106,9 +185,46 @@ public class CensusDataJob {
 		// Set the output paths for the job
 		FileInputFormat.addInputPath(job2, new Path(outputPath + "/part-r-00006")); // This is the results of Q7 and Q8 from stage 1
 		FileOutputFormat.setOutputPath(job2, outPath2);
-		
-		return job2.waitForCompletion(true) ? 0 : 1;
-		
+
+		// Wait for job to complete
+		int status = job2.waitForCompletion(true) ? 0 : 1;
+
+		// Process results into more readable form
+		if (status == 0) {
+			
+			System.out.println("***********************************************************");
+			System.out.println("	MapReduce tasks completed successfully!");
+			System.out.println("***********************************************************\n");
+			
+			try{
+				
+				// Process Q1
+				List<String> q1List = new ArrayList<String>();
+				Path pt = new Path(outPath.toString() + "/part-r-00000");
+				BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(pt)));
+				String line;
+				line = br.readLine();
+				int count = 1;
+				while (line != null){
+					q1List.add(line);
+					line = br.readLine();
+				}
+				br.close();
+				
+				for (int i = 0; i<q1List.size()-1; i++) {
+					String state = STATE_MAP.get(q1List.get(i).substring(0, 2));
+					String[] split = q1List.get(i).split("\t");
+					String[] split2 = q1List.get(i+1).split("\t");
+					System.out.println("For the state of " + state + ", " + split[1].split("=")[1].trim() + " residence rented while " + split2[1].split("=")[1].trim() + " residence owned.");
+				}
+				
+				// Process Q2
+				
+			}catch(Exception e){}
+		}
+
+		return status;
+
 	}
-	
+
 }

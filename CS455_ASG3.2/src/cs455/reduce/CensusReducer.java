@@ -24,7 +24,7 @@ import cs455.util.RangeBuilder;
  * Input formats: 
  * <state@rent-own, "count-rented/count-owned"> 												– Used for Q1 analysis
  * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-population"> 	– Used for Q2 analysis
- * <state@rural-urban, "count-rural/count-urban"> 												– Used for Q4 analysis
+ * <state@rural-urban, "count-rural/count-urban/count-undefined">								– Used for Q4 analysis
  * <state@male18-female18, "male-under18/female-under18/total-population"> 						– Used for Q3(a) analysis
  * <state@male19to29-female19to29, "male-19to29/female-19to29/total-population"> 				– Used for Q3(b) analysis
  * <state@male30to39-female30to39, "male-30to39/female-30to39/total-population"> 				– Used for Q3(c) analysis
@@ -104,11 +104,16 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 
 			for (Text value : values) {
 				String[] split = value.toString().split("/");
+				// Count of rural
 				count += Integer.parseInt(split[0]);
+				// Count of urban
 				count2 += Integer.parseInt(split[1]);
+				// Count of not-defined
+				total += Integer.parseInt(split[2]);
 			}
-
-			total = count + count2;
+			
+			// Add rural and urban to not-defined to get total count
+			total += (count + count2);
 
 			word.set(type[0] + " % Rural households");
 			result.set(count + "/" + total + " = " + getPercent(count, total) + "%");
