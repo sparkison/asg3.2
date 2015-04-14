@@ -209,7 +209,6 @@ public class CensusDataJob {
 				BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(pt)));
 				String line;
 				line = br.readLine();
-				int count = 1;
 				while (line != null){
 					q1List.add(line);
 					line = br.readLine();
@@ -218,7 +217,7 @@ public class CensusDataJob {
 				
 				pw.println("****************************************************************************");
 				pw.println("	Results for Q1");
-				pw.println("****************************************************************************\n");
+				pw.println("****************************************************************************");
 				
 				for (int i = 0; i<q1List.size()-1; i++) {
 					
@@ -238,7 +237,6 @@ public class CensusDataJob {
 				pt = new Path(outPath.toString() + "/part-r-00001");
 				br = new BufferedReader(new InputStreamReader(fs.open(pt)));
 				line = br.readLine();
-				count = 1;
 				while (line != null){
 					q2List.add(line);
 					line = br.readLine();
@@ -247,7 +245,7 @@ public class CensusDataJob {
 				
 				pw.println("****************************************************************************");
 				pw.println("	Results for Q2");
-				pw.println("****************************************************************************\n");
+				pw.println("****************************************************************************");
 				
 				for (int i = 0; i<q2List.size()-1; i++) {
 					
