@@ -9,6 +9,7 @@ package cs455.job;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -197,7 +198,8 @@ public class CensusDataJob {
 			System.out.println("****************************************************************************\n");
 			
 			try{
-				
+				// Save results
+			    PrintWriter pw = new PrintWriter("Census_Results");
 				// Process Q1
 				List<String> q1List = new ArrayList<String>();
 				Path pt = new Path(outPath.toString() + "/part-r-00000");
@@ -211,15 +213,27 @@ public class CensusDataJob {
 				}
 				br.close();
 				
+				pw.println("****************************************************************************");
+				pw.println("	Results for Q1");
+				pw.println("****************************************************************************\n");
+				
 				for (int i = 0; i<q1List.size()-1; i++) {
+					
 					String state = STATE_MAP.get(q1List.get(i).substring(0, 2));
 					String[] split = q1List.get(i).split("\t");
 					String[] split2 = q1List.get(i+1).split("\t");
-					System.out.println("For the state of " + state + ", " + split[1].split("=")[1].trim() + " residence rented while " + split2[1].split("=")[1].trim() + " residence owned.");
+					String result = "For the state of " + state + ", " + split[1].split("=")[1].trim() + " residence rented while " + split2[1].split("=")[1].trim() + " residence owned.";
+					pw.println(result);
+					// System.out.println(result);
 				}
 				
 				// Process Q2
 				
+				
+				// Close print writer
+				pw.flush();    
+		        pw.close();
+		        
 			}catch(Exception e){}
 		}
 
