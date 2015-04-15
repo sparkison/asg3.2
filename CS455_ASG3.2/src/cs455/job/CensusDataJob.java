@@ -190,7 +190,15 @@ public class CensusDataJob {
 		// Wait for job to complete
 		int status = job2.waitForCompletion(true) ? 0 : 1;
 
-		// Process results into more readable form
+		/*
+		 * Process results into more readable form
+		 * 
+		 * The below code simply parses the MR output
+		 * to a more human-readable form.
+		 * 
+		 * It is not needed to decipher the results, only to
+		 * combine and simplify them
+		 */
 		if (status == 0) {
 			
 			System.out.println("****************************************************************************");
@@ -200,6 +208,9 @@ public class CensusDataJob {
 			try{
 				// Save results
 			    PrintWriter pw = new PrintWriter("Census_Results");
+			    
+			    
+			    
 			    
 				/*
 				 * BEGIN Q1 formatting
@@ -229,6 +240,9 @@ public class CensusDataJob {
 					// System.out.println(result);
 				}
 				System.out.println();
+				
+				
+				
 				
 				/*
 				 * BEGIN Q2 formatting
@@ -262,9 +276,76 @@ public class CensusDataJob {
 				pw.flush();    
 		        pw.close();
 		        
+		        
+		        
+		        
+		        /*
+				 * BEGIN Q3(a,b and c) formatting
+				 */
+				List<String> q3List = new ArrayList<String>();
+				pt = new Path(outPath.toString() + "/part-r-00002");
+				br = new BufferedReader(new InputStreamReader(fs.open(pt)));
+				line = br.readLine();
+				while (line != null){
+					q3List.add(line);
+					line = br.readLine();
+				}
+				br.close();
+				
+				pw.println("****************************************************************************");
+				pw.println("	Results for Q3");
+				pw.println("****************************************************************************");
+				
+				/*
+				 	Input format:
+				  	AK % Male 18 and under (of total pop)	3646/550043 = 0.6628573%	(split)
+					AK % Female 18 and under (of total pop)	3383/550043 = 0.6150428%	(split2)
+					AK % Male age 19 to 29 (of total pop)	2491/550043 = 0.45287368%	(split3)
+					AK % Female age 19 to 29 (of total pop)	1746/550043 = 0.31742972%	(split4)
+					AK % Male age 30 to 39 (of total pop)	1871/550043 = 0.3401552%	(split5)
+					AK % Female age 30 to 39 (of total pop)	1615/550043 = 0.2936134%	(split6)
+				 */
+				
+				for (int i = 0; i<q3List.size()-6; i++) {
+					
+					String state = STATE_MAP.get(q1List.get(i).substring(0, 2));
+					String[] split = q1List.get(i).split("\t");
+					String[] split2 = q1List.get(i+1).split("\t");
+					String[] split3 = q1List.get(i+2).split("\t");
+					String[] split4 = q1List.get(i+3).split("\t");
+					String[] split5 = q1List.get(i+4).split("\t");
+					String[] split6 = q1List.get(i+5).split("\t");
+					
+					String result = "For the state of " + state + ", " + split[1].split("=")[1].trim() 
+							+ " of males are 18 and under, " + split3[1].split("=")[1].trim() 
+							+ " of males are 19 to 29, and " + split5[1].split("=")[1].trim() 
+							+ " of males are 30 to 39.";
+					
+					String resul2 = "For the state of " + state + ", " + split2[1].split("=")[1].trim() 
+							+ " of females are 18 and under, " + split4[1].split("=")[1].trim() 
+							+ " of females are 19 to 29, and " + split6[1].split("=")[1].trim() 
+							+ " of females are 30 to 39.";
+					
+					pw.println(result);
+					pw.println(resul2);
+					// System.out.println(result);
+					// System.out.println(result2);
+				}
+				System.out.println();
+				
+				// Close print writer
+				pw.flush();    
+		        pw.close();
+		        
+		        
+		        /*
+				 * BEGIN Q4 formatting
+				 */
+		        
+		        
 			}catch(Exception e){}
-		}
-
+		}// END Results processing
+		
 		return status;
 
 	}
