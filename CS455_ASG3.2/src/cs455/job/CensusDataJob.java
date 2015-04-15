@@ -237,6 +237,7 @@ public class CensusDataJob {
 					pw.println();
 					// System.out.println(result);
 				}
+				pw.println();
 				System.out.println();
 				qList.clear();
 
@@ -270,6 +271,7 @@ public class CensusDataJob {
 					pw.println();
 					// System.out.println(result);
 				}
+				pw.println();
 				System.out.println();
 				qList.clear();
 
@@ -328,6 +330,7 @@ public class CensusDataJob {
 					// System.out.println(result);
 					// System.out.println(result2);
 				}
+				pw.println();
 				System.out.println();
 				qList.clear();
 
@@ -364,6 +367,7 @@ public class CensusDataJob {
 					pw.println();
 					// System.out.println(result);
 				}
+				pw.println();
 				System.out.println();
 				qList.clear();
 
@@ -398,6 +402,7 @@ public class CensusDataJob {
 					pw.println();
 					// System.out.println(result);
 				}
+				pw.println();
 				System.out.println();
 				qList.clear();
 
@@ -432,6 +437,7 @@ public class CensusDataJob {
 					pw.println();
 					// System.out.println(result);
 				}
+				pw.println();
 				System.out.println();
 				qList.clear();
 
