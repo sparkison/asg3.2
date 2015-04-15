@@ -233,10 +233,11 @@ public class CensusDataJob {
 					String[] split = qList.get(i).split("\t");
 					String[] split2 = qList.get(i+1).split("\t");
 					String result = "For the state of " + state + ", " + split[1].split("=")[1].trim() + " residence rented while " + split2[1].split("=")[1].trim() + " residence owned.";
-					pw.println(result + "\n");
+					pw.println(result);
+					pw.println();
 					// System.out.println(result);
 				}
-				System.out.println("\n");
+				System.out.println();
 				qList.clear();
 
 
@@ -265,10 +266,11 @@ public class CensusDataJob {
 					String[] split = qList.get(i).split("\t");
 					String[] split2 = qList.get(i+1).split("\t");
 					String result = "For the state of " + state + ", " + split[1].split("=")[1].trim() + " of males never married and " + split2[1].split("=")[1].trim() + " of females never married.";
-					pw.println(result + "\n");
+					pw.println(result);
+					pw.println();
 					// System.out.println(result);
 				}
-				System.out.println("\n");
+				System.out.println();
 				qList.clear();
 
 
@@ -321,11 +323,12 @@ public class CensusDataJob {
 							+ " of females are 30 to 39.";
 
 					pw.println(result);
-					pw.println(resul2 + "\n");
+					pw.println(resul2);
+					pw.println();
 					// System.out.println(result);
 					// System.out.println(result2);
 				}
-				System.out.println("\n");
+				System.out.println();
 				qList.clear();
 
 
@@ -357,10 +360,11 @@ public class CensusDataJob {
 
 					String result = "For the state of " + state + ", " + split[1].split("=")[1].trim() + " of households are Rural and " + split2[1].split("=")[1].trim() + " of households are Urban.";
 
-					pw.println(result + "\n");
+					pw.println(result);
+					pw.println();
 					// System.out.println(result);
 				}
-				System.out.println("\n");
+				System.out.println();
 				qList.clear();
 
 
@@ -390,10 +394,11 @@ public class CensusDataJob {
 
 					String result = "For the state of " + state + ", the median value of house occupied by owner is " + split[1];
 
-					pw.println(result + "\n");
+					pw.println(result);
+					pw.println();
 					// System.out.println(result);
 				}
-				System.out.println("\n");
+				System.out.println();
 				qList.clear();
 
 
@@ -423,10 +428,11 @@ public class CensusDataJob {
 
 					String result = "For the state of " + state + ", the median rent paid is " + split[1];
 
-					pw.println(result + "\n");
+					pw.println(result);
+					pw.println();
 					// System.out.println(result);
 				}
-				System.out.println("\n");
+				System.out.println();
 				qList.clear();
 
 
@@ -455,7 +461,9 @@ public class CensusDataJob {
 				String result = split[0] + " " + split[1] + "\n" + split2[0] + " " + split2[1];
 
 				pw.println(result);
+				pw.println();
 				// System.out.println(result);
+				
 				System.out.println();
 
 				// Close print writer, clear list
