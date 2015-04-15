@@ -34,76 +34,76 @@ public class CensusDataJob {
 
 	public static final Map<String, String> STATE_MAP;
 	static {
-	    STATE_MAP = new HashMap<String, String>();
-	    STATE_MAP.put("AL", "Alabama");
-	    STATE_MAP.put("AK", "Alaska");
-	    STATE_MAP.put("AB", "Alberta");
-	    STATE_MAP.put("AZ", "Arizona");
-	    STATE_MAP.put("AR", "Arkansas");
-	    STATE_MAP.put("BC", "British Columbia");
-	    STATE_MAP.put("CA", "California");
-	    STATE_MAP.put("CO", "Colorado");
-	    STATE_MAP.put("CT", "Connecticut");
-	    STATE_MAP.put("DE", "Delaware");
-	    STATE_MAP.put("DC", "District Of Columbia");
-	    STATE_MAP.put("FL", "Florida");
-	    STATE_MAP.put("GA", "Georgia");
-	    STATE_MAP.put("GU", "Guam");
-	    STATE_MAP.put("HI", "Hawaii");
-	    STATE_MAP.put("ID", "Idaho");
-	    STATE_MAP.put("IL", "Illinois");
-	    STATE_MAP.put("IN", "Indiana");
-	    STATE_MAP.put("IA", "Iowa");
-	    STATE_MAP.put("KS", "Kansas");
-	    STATE_MAP.put("KY", "Kentucky");
-	    STATE_MAP.put("LA", "Louisiana");
-	    STATE_MAP.put("ME", "Maine");
-	    STATE_MAP.put("MB", "Manitoba");
-	    STATE_MAP.put("MD", "Maryland");
-	    STATE_MAP.put("MA", "Massachusetts");
-	    STATE_MAP.put("MI", "Michigan");
-	    STATE_MAP.put("MN", "Minnesota");
-	    STATE_MAP.put("MS", "Mississippi");
-	    STATE_MAP.put("MO", "Missouri");
-	    STATE_MAP.put("MT", "Montana");
-	    STATE_MAP.put("NE", "Nebraska");
-	    STATE_MAP.put("NV", "Nevada");
-	    STATE_MAP.put("NB", "New Brunswick");
-	    STATE_MAP.put("NH", "New Hampshire");
-	    STATE_MAP.put("NJ", "New Jersey");
-	    STATE_MAP.put("NM", "New Mexico");
-	    STATE_MAP.put("NY", "New York");
-	    STATE_MAP.put("NF", "Newfoundland");
-	    STATE_MAP.put("NC", "North Carolina");
-	    STATE_MAP.put("ND", "North Dakota");
-	    STATE_MAP.put("NT", "Northwest Territories");
-	    STATE_MAP.put("NS", "Nova Scotia");
-	    STATE_MAP.put("NU", "Nunavut");
-	    STATE_MAP.put("OH", "Ohio");
-	    STATE_MAP.put("OK", "Oklahoma");
-	    STATE_MAP.put("ON", "Ontario");
-	    STATE_MAP.put("OR", "Oregon");
-	    STATE_MAP.put("PA", "Pennsylvania");
-	    STATE_MAP.put("PE", "Prince Edward Island");
-	    STATE_MAP.put("PR", "Puerto Rico");
-	    STATE_MAP.put("QC", "Quebec");
-	    STATE_MAP.put("RI", "Rhode Island");
-	    STATE_MAP.put("SK", "Saskatchewan");
-	    STATE_MAP.put("SC", "South Carolina");
-	    STATE_MAP.put("SD", "South Dakota");
-	    STATE_MAP.put("TN", "Tennessee");
-	    STATE_MAP.put("TX", "Texas");
-	    STATE_MAP.put("UT", "Utah");
-	    STATE_MAP.put("VT", "Vermont");
-	    STATE_MAP.put("VI", "Virgin Islands");
-	    STATE_MAP.put("VA", "Virginia");
-	    STATE_MAP.put("WA", "Washington");
-	    STATE_MAP.put("WV", "West Virginia");
-	    STATE_MAP.put("WI", "Wisconsin");
-	    STATE_MAP.put("WY", "Wyoming");
-	    STATE_MAP.put("YT", "Yukon Territory");
+		STATE_MAP = new HashMap<String, String>();
+		STATE_MAP.put("AL", "Alabama");
+		STATE_MAP.put("AK", "Alaska");
+		STATE_MAP.put("AB", "Alberta");
+		STATE_MAP.put("AZ", "Arizona");
+		STATE_MAP.put("AR", "Arkansas");
+		STATE_MAP.put("BC", "British Columbia");
+		STATE_MAP.put("CA", "California");
+		STATE_MAP.put("CO", "Colorado");
+		STATE_MAP.put("CT", "Connecticut");
+		STATE_MAP.put("DE", "Delaware");
+		STATE_MAP.put("DC", "District Of Columbia");
+		STATE_MAP.put("FL", "Florida");
+		STATE_MAP.put("GA", "Georgia");
+		STATE_MAP.put("GU", "Guam");
+		STATE_MAP.put("HI", "Hawaii");
+		STATE_MAP.put("ID", "Idaho");
+		STATE_MAP.put("IL", "Illinois");
+		STATE_MAP.put("IN", "Indiana");
+		STATE_MAP.put("IA", "Iowa");
+		STATE_MAP.put("KS", "Kansas");
+		STATE_MAP.put("KY", "Kentucky");
+		STATE_MAP.put("LA", "Louisiana");
+		STATE_MAP.put("ME", "Maine");
+		STATE_MAP.put("MB", "Manitoba");
+		STATE_MAP.put("MD", "Maryland");
+		STATE_MAP.put("MA", "Massachusetts");
+		STATE_MAP.put("MI", "Michigan");
+		STATE_MAP.put("MN", "Minnesota");
+		STATE_MAP.put("MS", "Mississippi");
+		STATE_MAP.put("MO", "Missouri");
+		STATE_MAP.put("MT", "Montana");
+		STATE_MAP.put("NE", "Nebraska");
+		STATE_MAP.put("NV", "Nevada");
+		STATE_MAP.put("NB", "New Brunswick");
+		STATE_MAP.put("NH", "New Hampshire");
+		STATE_MAP.put("NJ", "New Jersey");
+		STATE_MAP.put("NM", "New Mexico");
+		STATE_MAP.put("NY", "New York");
+		STATE_MAP.put("NF", "Newfoundland");
+		STATE_MAP.put("NC", "North Carolina");
+		STATE_MAP.put("ND", "North Dakota");
+		STATE_MAP.put("NT", "Northwest Territories");
+		STATE_MAP.put("NS", "Nova Scotia");
+		STATE_MAP.put("NU", "Nunavut");
+		STATE_MAP.put("OH", "Ohio");
+		STATE_MAP.put("OK", "Oklahoma");
+		STATE_MAP.put("ON", "Ontario");
+		STATE_MAP.put("OR", "Oregon");
+		STATE_MAP.put("PA", "Pennsylvania");
+		STATE_MAP.put("PE", "Prince Edward Island");
+		STATE_MAP.put("PR", "Puerto Rico");
+		STATE_MAP.put("QC", "Quebec");
+		STATE_MAP.put("RI", "Rhode Island");
+		STATE_MAP.put("SK", "Saskatchewan");
+		STATE_MAP.put("SC", "South Carolina");
+		STATE_MAP.put("SD", "South Dakota");
+		STATE_MAP.put("TN", "Tennessee");
+		STATE_MAP.put("TX", "Texas");
+		STATE_MAP.put("UT", "Utah");
+		STATE_MAP.put("VT", "Vermont");
+		STATE_MAP.put("VI", "Virgin Islands");
+		STATE_MAP.put("VA", "Virginia");
+		STATE_MAP.put("WA", "Washington");
+		STATE_MAP.put("WV", "West Virginia");
+		STATE_MAP.put("WI", "Wisconsin");
+		STATE_MAP.put("WY", "Wyoming");
+		STATE_MAP.put("YT", "Yukon Territory");
 	}
-	
+
 	private String inputPath;
 	private String outputPath;
 
@@ -200,102 +200,96 @@ public class CensusDataJob {
 		 * combine and simplify them
 		 */
 		if (status == 0) {
-			
+
 			System.out.println("****************************************************************************");
 			System.out.println("	MapReduce tasks completed successfully! Formatting results...");
 			System.out.println("****************************************************************************\n");
-			
+
 			try{
 				// Save results
-			    PrintWriter pw = new PrintWriter("Census_Results");
-			    
-			    
-			    
-			    
-				/*
+				PrintWriter pw = new PrintWriter("Census_Results");
+				List<String> qList = new ArrayList<String>();
+
+				/**********************
 				 * BEGIN Q1 formatting
-				 */
-				List<String> q1List = new ArrayList<String>();
+				 **********************/
 				Path pt = new Path(outPath.toString() + "/part-r-00000");
 				BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(pt)));
 				String line;
 				line = br.readLine();
 				while (line != null){
-					q1List.add(line);
+					qList.add(line);
 					line = br.readLine();
 				}
 				br.close();
-				
+
 				pw.println("****************************************************************************");
 				pw.println("	Results for Q1");
 				pw.println("****************************************************************************");
-				
-				for (int i = 0; i<q1List.size()-1; i++) {
-					
-					String state = STATE_MAP.get(q1List.get(i).substring(0, 2));
-					String[] split = q1List.get(i).split("\t");
-					String[] split2 = q1List.get(i+1).split("\t");
+
+				for (int i = 0; i<qList.size()-1; i+=2) {
+
+					String state = STATE_MAP.get(qList.get(i).substring(0, 2));
+					String[] split = qList.get(i).split("\t");
+					String[] split2 = qList.get(i+1).split("\t");
 					String result = "For the state of " + state + ", " + split[1].split("=")[1].trim() + " residence rented while " + split2[1].split("=")[1].trim() + " residence owned.";
-					pw.println(result);
+					pw.println(result + "\n");
 					// System.out.println(result);
 				}
-				System.out.println();
-				
-				
-				
-				
-				/*
+				System.out.println("\n");
+				qList.clear();
+
+
+
+
+
+				/**********************
 				 * BEGIN Q2 formatting
-				 */
-				List<String> q2List = new ArrayList<String>();
+				 **********************/
 				pt = new Path(outPath.toString() + "/part-r-00001");
 				br = new BufferedReader(new InputStreamReader(fs.open(pt)));
 				line = br.readLine();
 				while (line != null){
-					q2List.add(line);
+					qList.add(line);
 					line = br.readLine();
 				}
 				br.close();
-				
+
 				pw.println("****************************************************************************");
 				pw.println("	Results for Q2");
 				pw.println("****************************************************************************");
-				
-				for (int i = 0; i<q2List.size()-1; i++) {
-					
-					String state = STATE_MAP.get(q1List.get(i).substring(0, 2));
-					String[] split = q1List.get(i).split("\t");
-					String[] split2 = q1List.get(i+1).split("\t");
+
+				for (int i = 0; i<qList.size()-1; i+=2) {
+
+					String state = STATE_MAP.get(qList.get(i).substring(0, 2));
+					String[] split = qList.get(i).split("\t");
+					String[] split2 = qList.get(i+1).split("\t");
 					String result = "For the state of " + state + ", " + split[1].split("=")[1].trim() + " of males never married and " + split2[1].split("=")[1].trim() + " of females never married.";
-					pw.println(result);
+					pw.println(result + "\n");
 					// System.out.println(result);
 				}
-				System.out.println();
-				
-				// Close print writer
-				pw.flush();    
-		        pw.close();
-		        
-		        
-		        
-		        
-		        /*
+				System.out.println("\n");
+				qList.clear();
+
+
+
+
+				/**********************
 				 * BEGIN Q3(a,b and c) formatting
-				 */
-				List<String> q3List = new ArrayList<String>();
+				 **********************/
 				pt = new Path(outPath.toString() + "/part-r-00002");
 				br = new BufferedReader(new InputStreamReader(fs.open(pt)));
 				line = br.readLine();
 				while (line != null){
-					q3List.add(line);
+					qList.add(line);
 					line = br.readLine();
 				}
 				br.close();
-				
+
 				pw.println("****************************************************************************");
 				pw.println("	Results for Q3");
 				pw.println("****************************************************************************");
-				
+
 				/*
 				 	Input format:
 				  	AK % Male 18 and under (of total pop)	3646/550043 = 0.6628573%	(split)
@@ -305,47 +299,173 @@ public class CensusDataJob {
 					AK % Male age 30 to 39 (of total pop)	1871/550043 = 0.3401552%	(split5)
 					AK % Female age 30 to 39 (of total pop)	1615/550043 = 0.2936134%	(split6)
 				 */
-				
-				for (int i = 0; i<q3List.size()-6; i++) {
-					
-					String state = STATE_MAP.get(q1List.get(i).substring(0, 2));
-					String[] split = q1List.get(i).split("\t");
-					String[] split2 = q1List.get(i+1).split("\t");
-					String[] split3 = q1List.get(i+2).split("\t");
-					String[] split4 = q1List.get(i+3).split("\t");
-					String[] split5 = q1List.get(i+4).split("\t");
-					String[] split6 = q1List.get(i+5).split("\t");
-					
+
+				for (int i = 0; i<qList.size()-5; i+=6) {
+
+					String state = STATE_MAP.get(qList.get(i).substring(0, 2));
+					String[] split = qList.get(i).split("\t");
+					String[] split2 = qList.get(i+1).split("\t");
+					String[] split3 = qList.get(i+2).split("\t");
+					String[] split4 = qList.get(i+3).split("\t");
+					String[] split5 = qList.get(i+4).split("\t");
+					String[] split6 = qList.get(i+5).split("\t");
+
 					String result = "For the state of " + state + ", " + split[1].split("=")[1].trim() 
 							+ " of males are 18 and under, " + split3[1].split("=")[1].trim() 
 							+ " of males are 19 to 29, and " + split5[1].split("=")[1].trim() 
 							+ " of males are 30 to 39.";
-					
+
 					String resul2 = "For the state of " + state + ", " + split2[1].split("=")[1].trim() 
 							+ " of females are 18 and under, " + split4[1].split("=")[1].trim() 
 							+ " of females are 19 to 29, and " + split6[1].split("=")[1].trim() 
 							+ " of females are 30 to 39.";
-					
+
 					pw.println(result);
-					pw.println(resul2);
+					pw.println(resul2 + "\n");
 					// System.out.println(result);
 					// System.out.println(result2);
 				}
-				System.out.println();
-				
-				// Close print writer
-				pw.flush();    
-		        pw.close();
-		        
-		        
-		        /*
+				System.out.println("\n");
+				qList.clear();
+
+
+
+
+
+
+				/**********************
 				 * BEGIN Q4 formatting
-				 */
-		        
-		        
+				 **********************/
+				pt = new Path(outPath.toString() + "/part-r-00003");
+				br = new BufferedReader(new InputStreamReader(fs.open(pt)));
+				line = br.readLine();
+				while (line != null){
+					qList.add(line);
+					line = br.readLine();
+				}
+				br.close();
+
+				pw.println("****************************************************************************");
+				pw.println("	Results for Q4");
+				pw.println("****************************************************************************");
+
+				for (int i = 0; i<qList.size()-1; i+=2) {
+
+					String state = STATE_MAP.get(qList.get(i).substring(0, 2));
+					String[] split = qList.get(i).split("\t");
+					String[] split2 = qList.get(i+1).split("\t");
+
+					String result = "For the state of " + state + ", " + split[1].split("=")[1].trim() + " of households are Rural and " + split2[1].split("=")[1].trim() + " of households are Urban.";
+
+					pw.println(result + "\n");
+					// System.out.println(result);
+				}
+				System.out.println("\n");
+				qList.clear();
+
+
+
+
+
+				/**********************
+				 * BEGIN Q5 formatting
+				 **********************/
+				pt = new Path(outPath.toString() + "/part-r-00004");
+				br = new BufferedReader(new InputStreamReader(fs.open(pt)));
+				line = br.readLine();
+				while (line != null){
+					qList.add(line);
+					line = br.readLine();
+				}
+				br.close();
+
+				pw.println("****************************************************************************");
+				pw.println("	Results for Q5");
+				pw.println("****************************************************************************");
+
+				for (int i = 0; i<qList.size(); i++) {
+
+					String state = STATE_MAP.get(qList.get(i).substring(0, 2));
+					String[] split = qList.get(i).split("\t");
+
+					String result = "For the state of " + state + ", the median value of house occupied by owner is " + split[1];
+
+					pw.println(result + "\n");
+					// System.out.println(result);
+				}
+				System.out.println("\n");
+				qList.clear();
+
+
+
+
+
+				/**********************
+				 * BEGIN Q6 formatting
+				 **********************/
+				pt = new Path(outPath.toString() + "/part-r-00005");
+				br = new BufferedReader(new InputStreamReader(fs.open(pt)));
+				line = br.readLine();
+				while (line != null){
+					qList.add(line);
+					line = br.readLine();
+				}
+				br.close();
+
+				pw.println("****************************************************************************");
+				pw.println("	Results for Q6");
+				pw.println("****************************************************************************");
+
+				for (int i = 0; i<qList.size(); i++) {
+
+					String state = STATE_MAP.get(qList.get(i).substring(0, 2));
+					String[] split = qList.get(i).split("\t");
+
+					String result = "For the state of " + state + ", the median rent paid is " + split[1];
+
+					pw.println(result + "\n");
+					// System.out.println(result);
+				}
+				System.out.println("\n");
+				qList.clear();
+
+
+
+
+
+				/**********************
+				 * BEGIN Q7 and Q8 formatting
+				 **********************/
+				pt = new Path(outPath2.toString() + "/part-r-00000");
+				br = new BufferedReader(new InputStreamReader(fs.open(pt)));
+				line = br.readLine();
+				while (line != null){
+					qList.add(line);
+					line = br.readLine();
+				}
+				br.close();
+
+				pw.println("****************************************************************************");
+				pw.println("	Results for Q7 and Q8");
+				pw.println("****************************************************************************");
+
+				String[] split = qList.get(0).split("\t");
+				String[] split2 = qList.get(1).split("\t");
+
+				String result = split[0] + " " + split[1] + "\n" + split2[0] + " " + split2[1];
+
+				pw.println(result);
+				// System.out.println(result);
+				System.out.println();
+
+				// Close print writer, clear list
+				pw.flush();    
+				pw.close();
+
+
 			}catch(Exception e){}
 		}// END Results processing
-		
+
 		return status;
 
 	}

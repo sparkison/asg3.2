@@ -55,7 +55,7 @@ public class SecondaryReducer extends Reducer<Text, Text, Text, Text>  {
 
 			}
 
-			word.set("State with greatest percent aged 85 and older is " + state);
+			word.set("State with the greatest percent aged 85 and older is " + state + " at");
 			result.set("" + greatestPercent + "%");
 			context.write(word, result);
 
@@ -95,8 +95,8 @@ public class SecondaryReducer extends Reducer<Text, Text, Text, Text>  {
 				}
 			}
 
-			result.set(percentileRange + " at " + (int) percentile + " of " + total);
-			word.set("95th percentile of number of rooms");
+			result.set(percentileRange + " at " + (int) percentile + " of " + total + " = " + getPercent((int) percentile, total) + "%");
+			word.set("The 95th percentile of number of rooms is");
 			context.write(word, result);
 
 		}
