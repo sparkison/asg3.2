@@ -17,16 +17,16 @@ import cs455.util.RangeBuilder;
 
 /*
  * Output formats: 
- * <state@rent-own, "count-rented/count-owned"> 												– Used for Q1 analysis
- * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-population"> 	– Used for Q2 analysis
- * <state@rural-urban, "count-rural/count-urban/count-undefined">								– Used for Q4 analysis
- * <state@male18-female18, "male-under18/female-under18/total-population"> 						– Used for Q3(a) analysis
- * <state@male19to29-female19to29, "male-19to29/female-19to29/total-population"> 				– Used for Q3(b) analysis
- * <state@male30to39-female30to39, "male-30to39/female-30to39/total-population"> 				– Used for Q3(c) analysis
- * <state@home-value, "value-range=count-of-range"> 											– Used for Q5 analysis
- * <state@rent-value, "value-range=count-of-range"> 											– Used for Q6 analysis
- * <state@number-rooms, "number-of-rooms=count"> 												– Used for Q7 analysis
- * <state@maleOver85-femalOver85, "male-85-and-older/female-85-and-older/total-population">		– Used for Q8 analysis
+ * <state@rent-own, "count-rented/count-owned"> 													– Used for Q1 analysis
+ * <state@maleUnmarried-femaleUnmarried, "male-unmarried/female-unmarried/total-male/total-female"> – Used for Q2 analysis
+ * <state@rural-urban, "count-rural/count-urban/count-undefined">									– Used for Q4 analysis
+ * <state@male18-female18, "male-under18/female-under18/total-population"> 							– Used for Q3(a) analysis
+ * <state@male19to29-female19to29, "male-19to29/female-19to29/total-population"> 					– Used for Q3(b) analysis
+ * <state@male30to39-female30to39, "male-30to39/female-30to39/total-population"> 					– Used for Q3(c) analysis
+ * <state@home-value, "value-range=count-of-range"> 												– Used for Q5 analysis
+ * <state@rent-value, "value-range=count-of-range"> 												– Used for Q6 analysis
+ * <state@number-rooms, "number-of-rooms=count"> 													– Used for Q7 analysis
+ * <state@maleOver85-femalOver85, "male-85-and-older/female-85-and-older/total-population">			– Used for Q8 analysis
  */
 public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 
@@ -105,7 +105,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				femaleUnmarried = Integer.parseInt(line.substring(4467, 4476));
 
 				word.set(state + "@maleUnmarried-femaleUnmarried");
-				output.set(maleUnmarried + "/" + femaleUnmarried + "/" + totalPop);
+				output.set(maleUnmarried + "/" + femaleUnmarried + "/" + malePop + "/" + femalePop);
 				context.write(word, output);
 
 				/*************************************
