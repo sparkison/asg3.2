@@ -48,7 +48,7 @@ public class SecondaryReducer extends Reducer<Text, Text, Text, Text>  {
 				int num = Integer.parseInt(split[1].split("/")[0]);
 				int denom = Integer.parseInt(split[1].split("/")[1]);
 				float percent = getPercent(num, denom);
-				if (percent > greatestPercent){
+				if (percent > greatestPercent && percent < 100){
 					greatestPercent = percent;
 					state = split[0];
 				}

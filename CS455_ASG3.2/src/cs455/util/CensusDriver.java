@@ -26,7 +26,13 @@ public class CensusDriver {
 		// The census job runner
 		CensusDataJob censusJob = new CensusDataJob(input, output);
 		try {
-			status = censusJob.start();
+			/*
+			 * Need to set level
+			 * 3 = Process primary census data, run secondary MR job on the results
+			 * 2 = Only run the secondary MR job (assumes output from first job is present)
+			 * 1 = Just format the results for the first and second MR jobs (assumes both outputs are present)
+			 */
+			status = censusJob.start(1);
 		} catch (IllegalArgumentException | ClassNotFoundException
 				| IOException | InterruptedException e) {
 			System.out.println("Error starting Census map reduce job: ");
