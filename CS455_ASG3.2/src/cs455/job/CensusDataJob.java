@@ -207,7 +207,7 @@ public class CensusDataJob {
 			
 			try{
 				// Save results
-			    PrintWriter pw = new PrintWriter("Census_Results");
+			    PrintWriter pw = new PrintWriter("Results");
 			    
 			    
 			    
