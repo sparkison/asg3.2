@@ -135,7 +135,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 					start += 9;
 				}
 				word.set(state + "@male18-female18");
-				output.set(maleUnder18 + "/" + femaleUnder18 + "/" + totalPop);
+				output.set(maleUnder18 + "/" + femaleUnder18 + "/" + malePop + "/" + femalePop);
 				context.write(word, output);
 
 				/*************************************
@@ -164,7 +164,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 					start += 9;
 				}
 				word.set(state + "@male19to29-female19to29");
-				output.set(male19to29 + "/" + female19to29 + "/" + totalPop);
+				output.set(male19to29 + "/" + female19to29 + "/" + malePop + "/" + femalePop);
 				context.write(word, output);
 
 
@@ -194,7 +194,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 					start += 9;
 				}
 				word.set(state + "@male30to39-female30to39");
-				output.set(male30to39 + "/" + female30to39 + "/" + totalPop);
+				output.set(male30to39 + "/" + female30to39 + "/" + malePop + "/" + femalePop);
 				context.write(word, output);
 				
 				/*************************************
