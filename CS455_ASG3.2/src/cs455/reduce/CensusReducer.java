@@ -340,9 +340,15 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 	}
 
 	// Helper method to calculate percentage of two values
-	private float getPercent(int num, int denom){
+	private String getPercent(int num, int denom){
 		float percent = num * 100f / denom;
-		return percent;
+		String result;
+		// Make sure percentage is within range, if not set to "N/A"
+		if (percent > 100 || percent < 0)
+			result = "N/A";
+		else
+			result = "" + percent;
+		return result;
 	}
 
 }
