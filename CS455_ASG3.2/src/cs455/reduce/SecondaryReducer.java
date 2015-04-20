@@ -48,14 +48,14 @@ public class SecondaryReducer extends Reducer<Text, Text, Text, Text>  {
 				int num = Integer.parseInt(split[1].split("/")[0]);
 				int denom = Integer.parseInt(split[1].split("/")[1]);
 				float percent = getPercent(num, denom);
-				if (percent > greatestPercent){
+				if (percent > greatestPercent && percent < 100){
 					greatestPercent = percent;
 					state = split[0];
 				}
 
 			}
 
-			word.set("State with the greatest percent aged 85 and older is " + state + " at");
+			word.set("State with greatest percent aged 85 and older is " + state);
 			result.set("" + greatestPercent + "%");
 			context.write(word, result);
 
@@ -95,8 +95,8 @@ public class SecondaryReducer extends Reducer<Text, Text, Text, Text>  {
 				}
 			}
 
-			result.set(percentileRange + " at " + (int) percentile + " of " + total + " = " + getPercent((int) percentile, total) + "%");
-			word.set("The 95th percentile of number of rooms is");
+			result.set(percentileRange + " at " + (int) percentile + " of " + total);
+			word.set("95th percentile of number of rooms");
 			context.write(word, result);
 
 		}

@@ -123,7 +123,7 @@ public class CensusDataJob {
 	/*
 	 * This is the job for the Census analysis
 	 */
-	public int start() throws IllegalArgumentException, IOException, ClassNotFoundException, InterruptedException{
+	public int start(int level) throws IllegalArgumentException, IOException, ClassNotFoundException, InterruptedException{
 
 		Configuration conf = new Configuration();
 		FileSystem fs = FileSystem.get(conf);
@@ -131,64 +131,85 @@ public class CensusDataJob {
 		Path inPath = new Path(inputPath);
 		Path outPath = new Path(outputPath);
 		Path outPath2 = new Path(outputPath + "_2");
+		int status = -1;
 
-		// Remove old output paths, if exist
-		if (fs.exists(outPath)) {
-			fs.delete(outPath, true);
+		// If level 3, do it all
+		if (level == 3) {
+
+			// Remove old output paths, if exist
+			if (fs.exists(outPath)) {
+				fs.delete(outPath, true);
+			}
+
+			Job job = Job.getInstance(conf, "Census analysis");
+			job.setJarByClass(CensusDataJob.class);
+
+			// Set Map, Partition, Combiner, and Reducer classes
+			job.setMapperClass(CensusMapper.class);
+			job.setPartitionerClass(CensusPartitioner.class);
+			job.setNumReduceTasks(7);
+			job.setReducerClass(CensusReducer.class);
+
+			// Set the Map output types
+			job.setMapOutputKeyClass(Text.class);
+			job.setMapOutputValueClass(Text.class);
+			// Set the Reduce output types
+			job.setOutputKeyClass(Text.class);
+			job.setOutputValueClass(Text.class);
+
+			// Set the output paths for the job
+			FileInputFormat.addInputPath(job, inPath);
+			FileOutputFormat.setOutputPath(job, outPath);
+
+			// Block for job to complete...
+			job.waitForCompletion(true);
+			
+			// Set level == 2 to run next task
+			level = 2;
+			
 		}
-		if (fs.exists(outPath2)) {
-			fs.delete(outPath2, true);
+
+		// If level 2, process secondary output (the output of the first MR job)
+		if (level == 2) {
+
+			// Remove old output paths, if exist
+			if (fs.exists(outPath2)) {
+				fs.delete(outPath2, true);
+			}
+
+			/*
+			 * Start MR stage 2 for computing values for Q7 and Q8
+			 */
+
+			Configuration conf2 = new Configuration();
+
+			Job job2 = Job.getInstance(conf2, "Census analysis stage 2");
+			job2.setJarByClass(CensusDataJob.class);
+
+			// Set Map, Partition, Combiner, and Reducer classes
+			job2.setMapperClass(SecondaryMapper.class);
+			job2.setReducerClass(SecondaryReducer.class);
+
+			// Set the Map output types
+			job2.setMapOutputKeyClass(Text.class);
+			job2.setMapOutputValueClass(Text.class);
+			// Set the Reduce output types
+			job2.setOutputKeyClass(Text.class);
+			job2.setOutputValueClass(Text.class);
+
+			// Set the output paths for the job
+			FileInputFormat.addInputPath(job2, new Path(outputPath + "/part-r-00006")); // This is the results of Q7 and Q8 from stage 1
+			FileOutputFormat.setOutputPath(job2, outPath2);
+
+			// Wait for job to complete
+			status = job2.waitForCompletion(true) ? 0 : 1;
 		}
 
-		Job job = Job.getInstance(conf, "Census analysis");
-		job.setJarByClass(CensusDataJob.class);
+		// If level 1, just format output
+		if (level == 1) {
+			status = 0;
+		}
 
-		// Set Map, Partition, Combiner, and Reducer classes
-		job.setMapperClass(CensusMapper.class);
-		job.setPartitionerClass(CensusPartitioner.class);
-		job.setNumReduceTasks(7);
-		job.setReducerClass(CensusReducer.class);
-
-		// Set the Map output types
-		job.setMapOutputKeyClass(Text.class);
-		job.setMapOutputValueClass(Text.class);
-		// Set the Reduce output types
-		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(Text.class);
-
-		// Set the output paths for the job
-		FileInputFormat.addInputPath(job, inPath);
-		FileOutputFormat.setOutputPath(job, outPath);
-
-		// Block for job to complete...
-		job.waitForCompletion(true);
-
-		/*
-		 * Start MR stage 2 for computing values for Q7 and Q8
-		 */
-
-		Configuration conf2 = new Configuration();
-
-		Job job2 = Job.getInstance(conf2, "Census analysis stage 2");
-		job2.setJarByClass(CensusDataJob.class);
-
-		// Set Map, Partition, Combiner, and Reducer classes
-		job2.setMapperClass(SecondaryMapper.class);
-		job2.setReducerClass(SecondaryReducer.class);
-
-		// Set the Map output types
-		job2.setMapOutputKeyClass(Text.class);
-		job2.setMapOutputValueClass(Text.class);
-		// Set the Reduce output types
-		job2.setOutputKeyClass(Text.class);
-		job2.setOutputValueClass(Text.class);
-
-		// Set the output paths for the job
-		FileInputFormat.addInputPath(job2, new Path(outputPath + "/part-r-00006")); // This is the results of Q7 and Q8 from stage 1
-		FileOutputFormat.setOutputPath(job2, outPath2);
-
-		// Wait for job to complete
-		int status = job2.waitForCompletion(true) ? 0 : 1;
 
 		/*
 		 * Process results into more readable form
@@ -207,7 +228,7 @@ public class CensusDataJob {
 
 			try{
 				// Save results
-				PrintWriter pw = new PrintWriter("Census_Results");
+				PrintWriter pw = new PrintWriter("Results");
 				List<String> qList = new ArrayList<String>();
 
 				/**********************
@@ -241,10 +262,6 @@ public class CensusDataJob {
 				System.out.println();
 				qList.clear();
 
-
-
-
-
 				/**********************
 				 * BEGIN Q2 formatting
 				 **********************/
@@ -274,9 +291,6 @@ public class CensusDataJob {
 				pw.println();
 				System.out.println();
 				qList.clear();
-
-
-
 
 				/**********************
 				 * BEGIN Q3(a,b and c) formatting
@@ -334,11 +348,6 @@ public class CensusDataJob {
 				System.out.println();
 				qList.clear();
 
-
-
-
-
-
 				/**********************
 				 * BEGIN Q4 formatting
 				 **********************/
@@ -371,10 +380,6 @@ public class CensusDataJob {
 				System.out.println();
 				qList.clear();
 
-
-
-
-
 				/**********************
 				 * BEGIN Q5 formatting
 				 **********************/
@@ -405,10 +410,6 @@ public class CensusDataJob {
 				pw.println();
 				System.out.println();
 				qList.clear();
-
-
-
-
 
 				/**********************
 				 * BEGIN Q6 formatting
@@ -441,10 +442,6 @@ public class CensusDataJob {
 				System.out.println();
 				qList.clear();
 
-
-
-
-
 				/**********************
 				 * BEGIN Q7 and Q8 formatting
 				 **********************/
@@ -469,15 +466,17 @@ public class CensusDataJob {
 				pw.println(result);
 				pw.println();
 				// System.out.println(result);
-				
+
 				System.out.println();
 
 				// Close print writer, clear list
 				pw.flush();    
 				pw.close();
-
-
-			}catch(Exception e){}
+				
+			}catch(Exception e){
+				System.out.println("Error formatting output.");
+				System.out.println(e.getMessage());
+			}
 		}// END Results processing
 
 		return status;
