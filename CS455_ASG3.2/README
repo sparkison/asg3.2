@@ -4,10 +4,12 @@ Census data collection using MapReduce, Shaun Parkison (shaunpa)
 
 Compile jar via: "ant compile dist", "census.jar" file will be generated within the "dist" folder
 
-Run using "$HADOOP_HOME/bin/hadoop jar 'JAR_LOCATION/census.jar' cs455.util.CensusDriver [census_input_path] [results_output_path]"
+Run using "$HADOOP_HOME/bin/hadoop jar 'JAR_LOCATION/census.jar' cs455.util.CensusDriver [census_input_path] [results_output_path] [level (3,2, or 1)]"
 
 [census_input_path] is the path that contains the census data
 [results_output_path] is where the results will be stored
+[level (3,2, or 1)] the level of data to process; 3 will run all needed jobs to determine answers. 2 will run only the MR job needed
+to complete Q7 and Q8 based on the output from 3. 1 will run only the output formatting based on the outputs from 3 and 2 (NOTE: 1 depends on 2 depends on 3).
 
 Results for Q1 will be in: 				[results_output_path]/part-r-00000
 Results for Q2 will be in:				[results_output_path]/part-r-00001

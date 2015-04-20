@@ -14,14 +14,15 @@ public class CensusDriver {
 
 	public static void main(String args[]) {
 		
-		if(args == null || args.length < 1) {
-			System.out.println("Incorrect number of arguments used.\nPlease use: \"cs455.util.CensusDriver [input_path] [output_path]\"");
+		if(args.length < 3 || args == null) {
+			System.out.println("Incorrect number of arguments used.\nPlease use: \"cs455.util.CensusDriver [input_path] [output_path] [level (3,2, or 1)]\"");
 			System.exit(1);
 		}
 		
 		String input = args[0];
 		String output = args[1];
-		int status;
+		int processType = Integer.parseInt(args[2]);
+		int status = -1;
 		
 		// The census job runner
 		CensusDataJob censusJob = new CensusDataJob(input, output);
@@ -32,12 +33,12 @@ public class CensusDriver {
 			 * 2 = Only run the secondary MR job (assumes output from first job is present)
 			 * 1 = Just format the results for the first and second MR jobs (assumes both outputs are present)
 			 */
-			status = censusJob.start(1);
+			status = censusJob.start(processType);
 		} catch (IllegalArgumentException | ClassNotFoundException
 				| IOException | InterruptedException e) {
 			System.out.println("Error starting Census map reduce job: ");
 			e.printStackTrace();
-			System.exit(1);
+			System.exit(status);
 		}
 		
 	}
