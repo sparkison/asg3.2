@@ -34,11 +34,11 @@ public class SecondaryMapper extends Mapper<LongWritable, Text, Text, Text> {
 			context.write(word, output);
 		} else {
 			/*
-			 * Format of input: "AL 9 rooms	7701"
-			 * Format of output: "<rooms, '9 rooms@AL=7701'>"
+			 * Format of input: "AL median number of rooms 9 rooms@7701"
+			 * Format of output: "<rooms, '9 rooms=7701'>"
 			 */
 			word.set("rooms");
-			output.set(split[0].substring(3, split[0].length()) + "@" + split[0].substring(0, 2) + "=" + split[1]);
+			output.set(split[1].split("@")[0] + "=" + split[1].split("@")[1]);
 			context.write(word, output);
 		}
 		

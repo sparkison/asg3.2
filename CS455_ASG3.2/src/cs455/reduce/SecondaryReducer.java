@@ -17,7 +17,7 @@ import org.apache.hadoop.mapreduce.Reducer.Context;
 import cs455.util.RangeBuilder;
 
 /*
- * Input format for Q7: "<rooms, '9 rooms@AL=7701'>"
+ * Input format for Q7: "<rooms, '9 rooms=7701'>"
  * Input format for Q8: "<Aged 85 and greater, 'AL=13/407675'>"
  */
 public class SecondaryReducer extends Reducer<Text, Text, Text, Text>  {
@@ -72,8 +72,8 @@ public class SecondaryReducer extends Reducer<Text, Text, Text, Text>  {
 			// Get the counts for each range
 			for (Text value : values) {
 				String[] split = value.toString().split("=");
+				numRooms = split[0].trim();
 				count = Integer.parseInt(split[1]);
-				numRooms = split[0].split("@")[0].trim();
 				percentile += count;
 				if (!valueMap.containsKey(numRooms)) {
 					valueMap.put(numRooms, count);
@@ -83,6 +83,7 @@ public class SecondaryReducer extends Reducer<Text, Text, Text, Text>  {
 					valueMap.put(numRooms, count2);
 				}
 			}
+			
 			total = (int) percentile;
 			percentile = (float) (percentile * 0.95);
 

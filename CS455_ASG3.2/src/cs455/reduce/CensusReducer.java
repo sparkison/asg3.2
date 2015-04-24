@@ -117,7 +117,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 				// Count of not-defined
 				total += Integer.parseInt(split[2]);
 			}
-			
+
 			// Add rural and urban to not-defined to get total count
 			total += (count + count2);
 
@@ -294,15 +294,21 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 
 		/*************************************
 		 * Q(7) 95'th percentile number of rooms
+		 * Stage 1: find the median per state
 		 *************************************/
 		if (inputType.equals("number-rooms")) {
 
+			// input format: <state@number-rooms, "number-of-rooms=count">
 			Map<String, Integer> valueMap = new HashMap<String, Integer>();
-			
+			String[] orderedRange = rb.getRoomValueRange();
+			String percentileRange = "";
+			String numRooms = "";
+
 			for (Text value : values) {
 				String[] split = value.toString().split("=");
-				String numRooms = split[0].trim();
+				numRooms = split[0].trim();
 				count = Integer.parseInt(split[1]);
+				percentile += count;
 				if (!valueMap.containsKey(numRooms)) {
 					valueMap.put(numRooms, count);
 				} else {
@@ -311,12 +317,22 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 					valueMap.put(numRooms, count2);
 				}
 			}
-			
-			for (String val : valueMap.keySet()) {
-				result.set("" + valueMap.get(val));
-				word.set(type[0] + " " + val);
-				context.write(word, result);
+
+			// Determine the median number of rooms for this state
+			percentile = (float) (percentile * 0.5);
+
+			// Loop through the ordered set to determine which range contains the percentile
+			for (int i = 0; i<orderedRange.length; i++) {
+				percentileCompare += valueMap.get(orderedRange[i]);
+				if (percentileCompare >= percentile) {
+					percentileRange = orderedRange[i];
+					break;
+				}
 			}
+
+			result.set(percentileRange + "@" + valueMap.get(percentileRange));
+			word.set(type[0] + " median number for rooms");
+			context.write(word, result);
 
 		}
 
