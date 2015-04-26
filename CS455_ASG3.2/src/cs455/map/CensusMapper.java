@@ -135,7 +135,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 					femaleUnder18 += Integer.parseInt(line.substring(start, start + 9));
 					start += 9;
 				}
-				
+
 				word.set(state + "@male18-female18");
 				output.set(maleUnder18 + "/" + femaleUnder18 + "/" + malePop + "/" + femalePop);
 				context.write(word, output);

@@ -55,14 +55,15 @@ public class SecondaryReducer extends Reducer<Text, Text, Text, Text>  {
 
 			}
 
-			word.set("State with greatest percent aged 85 and older is " + state);
+			word.set("State with greatest percent aged 85 and older is " + state + " with");
 			result.set("" + greatestPercent + "%");
 			context.write(word, result);
 
 		} 
 		/*************************************
 		 * Q(7) 95'th percentile number of rooms
-		 * Stage 2: determine the 95'th percentile across all states
+		 * Stage 2: determine the 95'th percentile 
+		 * of average #rooms across all states
 		 *************************************/
 		else {
 			Map<String, Integer> valueMap = new HashMap<String, Integer>();
@@ -90,6 +91,7 @@ public class SecondaryReducer extends Reducer<Text, Text, Text, Text>  {
 
 			// Loop through the ordered set to determine which range contains the 95th percentile
 			for (int i = 0; i<orderedRange.length; i++) {
+				// Might not have the room number in the set, add and set to 0 if that's the case
 				if (valueMap.get(orderedRange[i]) == null){
 					valueMap.put(orderedRange[i], 0);
 				}
@@ -101,7 +103,7 @@ public class SecondaryReducer extends Reducer<Text, Text, Text, Text>  {
 			}
 
 			result.set(percentileRange + " at " + (int) percentile + " of " + total);
-			word.set("95th percentile of number of rooms");
+			word.set("95th percentile of number of rooms is");
 			context.write(word, result);
 
 		}
