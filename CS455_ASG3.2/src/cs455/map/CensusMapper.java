@@ -94,13 +94,15 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 
 			if (logicalRecordPart == 1) {
 
-				/*************************************
-				 * Q(2) Male-unarried vs. female-unmarried
-				 *************************************/
+				// Population variables
 				totalPop = Integer.parseInt(line.substring(300, 309));
 				malePop = Integer.parseInt(line.substring(363, 372));
 				femalePop = Integer.parseInt(line.substring(372, 381));
-
+				int start = 0;
+				
+				/*************************************
+				 * Q(2) Male-unarried vs. female-unmarried
+				 *************************************/
 				maleUnmarried = Integer.parseInt(line.substring(4422, 4431)); 
 				femaleUnmarried = Integer.parseInt(line.substring(4467, 4476));
 
@@ -113,7 +115,6 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 				 *************************************/
 				int maleUnder18 = 0;
 				int femaleUnder18 = 0;
-				int start;
 				/*
 				 * Males aged 18 and under
 				 * Start index = 3864, end = 3981
@@ -134,6 +135,7 @@ public class CensusMapper extends Mapper<LongWritable, Text, Text, Text> {
 					femaleUnder18 += Integer.parseInt(line.substring(start, start + 9));
 					start += 9;
 				}
+				
 				word.set(state + "@male18-female18");
 				output.set(maleUnder18 + "/" + femaleUnder18 + "/" + malePop + "/" + femalePop);
 				context.write(word, output);

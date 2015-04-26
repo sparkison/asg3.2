@@ -189,7 +189,7 @@ public class CensusReducer extends Reducer<Text, Text, Text, Text> {
 		 * Q(3c) Male 30 to 39/female 30 to 39
 		 *************************************/
 		if (inputType.equals("male30to39-female30to39")) {
-
+			
 			for (Text value : values) {
 				String[] split = value.toString().split("/");
 				// Count of male 30 to 39

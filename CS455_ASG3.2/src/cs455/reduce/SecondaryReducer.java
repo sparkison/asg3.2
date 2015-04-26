@@ -17,7 +17,7 @@ import org.apache.hadoop.mapreduce.Reducer.Context;
 import cs455.util.RangeBuilder;
 
 /*
- * Input format for Q7: "<rooms, '9 rooms=7701'>"
+ * Input format for Q7: "<rooms, '9 rooms@7701'>"
  * Input format for Q8: "<Aged 85 and greater, 'AL=13/407675'>"
  */
 public class SecondaryReducer extends Reducer<Text, Text, Text, Text>  {
@@ -62,6 +62,7 @@ public class SecondaryReducer extends Reducer<Text, Text, Text, Text>  {
 		} 
 		/*************************************
 		 * Q(7) 95'th percentile number of rooms
+		 * Stage 2: determine the 95'th percentile across all states
 		 *************************************/
 		else {
 			Map<String, Integer> valueMap = new HashMap<String, Integer>();
@@ -71,7 +72,7 @@ public class SecondaryReducer extends Reducer<Text, Text, Text, Text>  {
 
 			// Get the counts for each range
 			for (Text value : values) {
-				String[] split = value.toString().split("=");
+				String[] split = value.toString().split("@");
 				numRooms = split[0].trim();
 				count = Integer.parseInt(split[1]);
 				percentile += count;
@@ -89,6 +90,9 @@ public class SecondaryReducer extends Reducer<Text, Text, Text, Text>  {
 
 			// Loop through the ordered set to determine which range contains the 95th percentile
 			for (int i = 0; i<orderedRange.length; i++) {
+				if (valueMap.get(orderedRange[i]) == null){
+					valueMap.put(orderedRange[i], 0);
+				}
 				percentileCompare += valueMap.get(orderedRange[i]);
 				if (percentileCompare >= percentile) {
 					percentileRange = orderedRange[i];

@@ -253,7 +253,7 @@ public class CensusDataJob {
 					String state = STATE_MAP.get(qList.get(i).substring(0, 2));
 					String[] split = qList.get(i).split("\t");
 					String[] split2 = qList.get(i+1).split("\t");
-					String result = "For the state of " + state + ", " + split[1].split("=")[1].trim() + " residence rented while " + split2[1].split("=")[1].trim() + " residence owned.";
+					String result = "For the state of " + state + ",\t" + split[1].split("=")[1].trim() + "\tresidence rented while " + split2[1].split("=")[1].trim() + "\tresidence owned.";
 					pw.println(result);
 					// System.out.println(result);
 				}
@@ -282,7 +282,7 @@ public class CensusDataJob {
 					String state = STATE_MAP.get(qList.get(i).substring(0, 2));
 					String[] split = qList.get(i).split("\t");
 					String[] split2 = qList.get(i+1).split("\t");
-					String result = "For the state of " + state + ", " + split[1].split("=")[1].trim() + " of males never married and " + split2[1].split("=")[1].trim() + " of females never married.";
+					String result = "For the state of " + state + ",\t" + split[1].split("=")[1].trim() + "\tof males never married and " + split2[1].split("=")[1].trim() + "\tof females never married.";
 					pw.println(result);
 					// System.out.println(result);
 				}
@@ -326,15 +326,15 @@ public class CensusDataJob {
 					String[] split5 = qList.get(i+4).split("\t");
 					String[] split6 = qList.get(i+5).split("\t");
 
-					String result = "For the state of " + state + ", " + split[1].split("=")[1].trim() 
-							+ " of males are 18 and under, " + split3[1].split("=")[1].trim() 
-							+ " of males are 19 to 29, and " + split5[1].split("=")[1].trim() 
-							+ " of males are 30 to 39.";
+					String result = "For the state of " + state + ",\t" + split[1].split("=")[1].trim() 
+							+ "\tof males are 18 and under, " + split3[1].split("=")[1].trim() 
+							+ "\tof males are 19 to 29, and " + split5[1].split("=")[1].trim() 
+							+ "\tof males are 30 to 39.";
 
-					String resul2 = "For the state of " + state + ", " + split2[1].split("=")[1].trim() 
-							+ " of females are 18 and under, " + split4[1].split("=")[1].trim() 
-							+ " of females are 19 to 29, and " + split6[1].split("=")[1].trim() 
-							+ " of females are 30 to 39.";
+					String resul2 = "For the state of " + state + ",\t" + split2[1].split("=")[1].trim() 
+							+ "\tof females are 18 and under, " + split4[1].split("=")[1].trim() 
+							+ "\tof females are 19 to 29, and " + split6[1].split("=")[1].trim() 
+							+ "\tof females are 30 to 39.";
 
 					pw.println(result);
 					pw.println(resul2);
@@ -367,7 +367,7 @@ public class CensusDataJob {
 					String[] split = qList.get(i).split("\t");
 					String[] split2 = qList.get(i+1).split("\t");
 
-					String result = "For the state of " + state + ", " + split[1].split("=")[1].trim() + " of households are Rural and " + split2[1].split("=")[1].trim() + " of households are Urban.";
+					String result = "For the state of " + state + ",\t" + split[1].split("=")[1].trim() + "\tof households are Rural and " + split2[1].split("=")[1].trim() + "\tof households are Urban.";
 
 					pw.println(result);
 					// System.out.println(result);
@@ -397,7 +397,7 @@ public class CensusDataJob {
 					String state = STATE_MAP.get(qList.get(i).substring(0, 2));
 					String[] split = qList.get(i).split("\t");
 
-					String result = "For the state of " + state + ", the median value of house occupied by owner is " + split[1];
+					String result = "For the state of " + state + ",\tthe median value of house occupied by owner is " + split[1];
 
 					pw.println(result);
 					// System.out.println(result);
@@ -427,7 +427,7 @@ public class CensusDataJob {
 					String state = STATE_MAP.get(qList.get(i).substring(0, 2));
 					String[] split = qList.get(i).split("\t");
 
-					String result = "For the state of " + state + ", the median rent paid is " + split[1];
+					String result = "For the state of " + state + ",\tthe median rent paid is " + split[1];
 
 					pw.println(result);
 					// System.out.println(result);
